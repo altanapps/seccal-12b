@@ -2,5 +2,6 @@ data/synth/out/raw.jsonl
 data/synth/out/batch_A.jsonl
 data/synth/out/blind/
 data/synth/out/review_queue.jsonl
+data/synth/out/batch_B/
 __pycache__/
 .DS_Store
