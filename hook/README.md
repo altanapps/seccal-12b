@@ -38,9 +38,13 @@ Add to `~/.claude/settings.json` (user-wide) or `.claude/settings.json`
 ```
 
 The hook reads the event from stdin and prints a `hookSpecificOutput` with
-`permissionDecision` set to `allow`, `ask`, or `deny`. Check the matcher and
-output field names against the current Claude Code hooks reference if you are
-on a newer release.
+`permissionDecision` set to `allow`, `ask`, or `deny` (verified against the
+current hooks reference, https://code.claude.com/docs/en/hooks). When it
+makes no decision (server down, fail-open) it prints nothing and exits 0,
+which is the documented way to defer to the normal permission flow. The
+matcher is an unanchored regex, which is what we want here. Note that a hook
+`allow` skips the prompt but deny/ask rules from other hooks still apply;
+precedence is deny > ask > allow.
 
 ## 3. Behaviour and knobs
 

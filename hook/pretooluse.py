@@ -89,10 +89,15 @@ def ask_server(url: str, goal: str, tool_name: str, tool_input, timeout: float) 
 
 
 def emit(decision: str | None, reason: str) -> None:
-    out = {"hookSpecificOutput": {"hookEventName": "PreToolUse"}}
-    if decision:
-        out["hookSpecificOutput"]["permissionDecision"] = decision
-        out["hookSpecificOutput"]["permissionDecisionReason"] = reason
+    # Per the Claude Code hooks reference, printing nothing and exiting 0 is the
+    # documented way to make no decision and let the normal permission flow run.
+    if not decision:
+        return
+    out = {"hookSpecificOutput": {
+        "hookEventName": "PreToolUse",
+        "permissionDecision": decision,
+        "permissionDecisionReason": reason,
+    }}
     print(json.dumps(out))
 
 
