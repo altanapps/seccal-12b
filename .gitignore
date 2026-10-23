@@ -3,5 +3,8 @@ data/synth/out/batch_A.jsonl
 data/synth/out/blind/
 data/synth/out/review_queue.jsonl
 data/synth/out/batch_B/
+data/synth/out/batch_D/
+data/synth/out/batch_E/
+FINETUNE_PLAN.md
 __pycache__/
 .DS_Store

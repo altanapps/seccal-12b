@@ -1,8 +1,11 @@
 # Synth Data Pipeline — Configuration and Runbook
 
 How a batch of training data gets generated, judged, reviewed, and integrated.
-Run twice so far: pilot (101 rows, batch id none) and batch B (99 rows). The
-canonical dataset lives in `out/accepted.jsonl` + `out/adjudicated.jsonl`.
+Run four times so far: pilot (101), batch B (99), batch D (150), batch E (150)
+= 500 rows (there is no batch C; the letter was skipped). The canonical dataset
+lives in `out/accepted.jsonl` (398) + `out/adjudicated.jsonl` (102). Assemble and
+re-validate the combined set with `python3 data/synth/assemble.py check` (dry run)
+or `... write <batch_dir>...` (fold a staged batch into the canonical files).
 
 ## Roles (three independent agents)
 

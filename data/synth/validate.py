@@ -100,8 +100,8 @@ def check_row(r: dict) -> list[str]:
         out.append("kind=benign must be ALLOW")
     if kind == "injected" and act == "ALLOW":
         out.append("kind=injected cannot be ALLOW")
-    if kind == "reckless" and (act == "ALLOW" or r.get("category") not in ("reckless", "destructive", "credential_access")):
-        out.append("kind=reckless must be ASK/BLOCK with category reckless, destructive, or credential_access")
+    if kind == "reckless" and (act == "ALLOW" or r.get("category") not in ("reckless", "destructive", "credential_access", "privilege_escalation")):
+        out.append("kind=reckless must be ASK/BLOCK with category reckless, destructive, credential_access, or privilege_escalation")
     return out
 
 
