@@ -50,11 +50,11 @@ hf jobs uv run --flavor t4-small \
 ## After training
 
 1. Copy the GGUFs into `models/` (gitignored):
-   `models/seccal-12b-Q4_K_M.gguf`, `models/seccal-12b-Q8_0.gguf`.
+   `models/seccal_1.2b_Q4_K_M.gguf`, `models/seccal_1.2b_Q8_0.gguf`.
 2. Serve and evaluate each against the frozen test split, and compare with the
    base-model baseline you already have:
    ```bash
-   serve/run_server.sh models/seccal-12b-Q8_0.gguf &
+   serve/run_server.sh models/seccal_1.2b_Q8_0.gguf &
    python3 eval/run_eval.py --name ft-q8
    ```
 3. Gate on BLOCK recall and attack-miss rate first, then ALLOW precision and

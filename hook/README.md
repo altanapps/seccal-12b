@@ -7,7 +7,7 @@ the category in the reason.
 ## 1. Start the server
 
 ```bash
-serve/run_server.sh models/<your-model>.gguf      # default port 8089
+serve/run_server.sh models/seccal_1.2b_Q4_K_M.gguf      # default port 8089
 ```
 
 Keep it running in a terminal (or a launchd agent). It serves the model with
