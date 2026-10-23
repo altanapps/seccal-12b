@@ -8,3 +8,7 @@ data/synth/out/batch_E/
 FINETUNE_PLAN.md
 __pycache__/
 .DS_Store
+models/
+data/sft/
+eval/out/
+/out/

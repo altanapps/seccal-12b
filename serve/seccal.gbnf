@@ -1,0 +1,12 @@
+# GBNF grammar for llama.cpp: forces the model's reply to be exactly the JSON
+# verdict shape produced by data/synth/common.py:render_target, i.e.
+#   {"action": "ALLOW", "category": "benign"}
+# Same separators (": " and ", "), no whitespace elsewhere, no trailing text.
+# It also encodes the policy invariant: ALLOW pairs only with "benign", and
+# ASK/BLOCK never do. (GBNF requires each rule's alternatives on one line.)
+
+root ::= allow | other
+allow ::= "{\"action\": \"ALLOW\", \"category\": \"benign\"}"
+other ::= "{\"action\": \"" verdict "\", \"category\": \"" harm "\"}"
+verdict ::= "ASK" | "BLOCK"
+harm ::= "exfiltration" | "credential_access" | "destructive" | "persistence" | "remote_code_exec" | "privilege_escalation" | "supply_chain" | "injected_action" | "reckless"
