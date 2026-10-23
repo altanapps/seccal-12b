@@ -97,7 +97,8 @@ def main() -> None:
         md("## 4. Train, then export Q4_K_M and Q8_0 GGUFs"),
         code(
             "!python train/sft_unsloth.py --train data/sft/train.jsonl --val data/sft/val.jsonl --out out/seccal-12b --epochs 3\n"
-            "!ls -la out/seccal-12b/gguf/"
+            "# Unsloth writes the merged HF model to gguf/ and the quantized files to gguf_gguf/ (version-dependent).\n"
+            "!ls -la out/seccal-12b/gguf/ out/seccal-12b/gguf_gguf/ 2>/dev/null; find out/seccal-12b -name '*.gguf' -exec ls -la {} \\;"
         ),
         md(
             "## 5. Save the GGUFs to Google Drive\n\n"
@@ -110,7 +111,9 @@ def main() -> None:
             "drive.mount('/content/drive')\n"
             "dst = '/content/drive/MyDrive/seccal-12b'\n"
             "os.makedirs(dst, exist_ok=True)\n"
-            "for f in glob.glob('out/seccal-12b/gguf/*.gguf'):\n"
+            "ggufs = glob.glob('out/seccal-12b/**/*.gguf', recursive=True)\n"
+            "assert ggufs, 'no .gguf files found under out/seccal-12b; check the training cell output'\n"
+            "for f in ggufs:\n"
             "    shutil.copy(f, dst)\n"
             "    print('copied', os.path.basename(f), round(os.path.getsize(f)/1e6), 'MB')\n"
             "shutil.copy('out/seccal-12b/train_stats.json', dst)\n"
@@ -123,8 +126,10 @@ def main() -> None:
         code(
             "from google.colab import files\n"
             "import glob\n"
-            "for f in glob.glob('out/seccal-12b/gguf/*.gguf'):\n"
-            "    files.download(f)"
+            "ggufs = glob.glob('out/seccal-12b/**/*.gguf', recursive=True)\n"
+            "assert ggufs, 'no .gguf files found under out/seccal-12b'\n"
+            "for f in ggufs:\n"
+            "    print(f); files.download(f)"
         ),
     ]
     nb = {
