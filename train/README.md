@@ -14,15 +14,28 @@ python3 data/synth/render_sft.py   # writes data/sft/{train,val,test}.jsonl
 
 Upload `data/sft/train.jsonl` and `data/sft/val.jsonl` with the script.
 
-## Colab (free T4)
+## Colab (free T4): the one-file path
 
-```python
-!pip install -q unsloth "trl>=0.15" datasets
-!python train/sft_unsloth.py --train data/sft/train.jsonl --val data/sft/val.jsonl --out out/seccal-12b
+The repo is private, so Colab cannot clone it. `train/seccal_colab.ipynb` is a
+single self-contained notebook with the training script and the rendered
+train/val data embedded (as a small base64 zip). Nothing else to upload.
+
+1. Open https://colab.research.google.com → `File → Upload notebook` →
+   pick `train/seccal_colab.ipynb`.
+2. `Runtime → Change runtime type → T4 GPU`.
+3. `Runtime → Run all`. Approve the Google Drive prompt near the end.
+4. The GGUFs land in `MyDrive/seccal-12b/`. Copy them into this repo's
+   `models/` folder on the Mac.
+
+~400 rows x 3 epochs at effective batch 8 is a few minutes of training; with
+installs, 10–20 minutes end to end. The first cell asserts a GPU is present,
+and the script picks fp16 on T4 (no bf16 there) automatically.
+
+Rebuild the notebook after any change to the script or dataset:
+
+```bash
+python3 data/synth/render_sft.py && python3 train/make_colab_notebook.py
 ```
-
-~500 rows x 3 epochs at effective batch 8 is a few minutes on a T4. Download
-`out/seccal-12b/gguf/*.gguf` when it finishes.
 
 ## HF Jobs
 

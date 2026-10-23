@@ -55,6 +55,12 @@ def main() -> None:
     from unsloth import FastLanguageModel  # imported late so --help works without a GPU
     from unsloth.chat_templates import train_on_responses_only
     from trl import SFTConfig, SFTTrainer
+    import torch
+
+    # Colab's free T4 (Turing) has no bf16; Ampere+ does. Pick whichever the GPU supports.
+    use_bf16 = bool(torch.cuda.is_available() and torch.cuda.is_bf16_supported())
+    print(f"GPU: {torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'none'}  "
+          f"precision: {'bf16' if use_bf16 else 'fp16'}")
 
     model, tokenizer = FastLanguageModel.from_pretrained(
         model_name=MODEL, max_seq_length=args.max_seq, dtype=None, load_in_4bit=False,
@@ -101,7 +107,8 @@ def main() -> None:
             save_total_limit=2,
             load_best_model_at_end=True,
             metric_for_best_model="eval_loss",
-            bf16=True,
+            bf16=use_bf16,
+            fp16=not use_bf16,
             seed=args.seed,
             report_to="none",
         ),
