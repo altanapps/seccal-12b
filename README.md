@@ -60,3 +60,63 @@ The untrained base model allowed 45 of 49 calls and blocked nothing. Over test +
 Dataset (500 rows), first fine-tune, eval, serving, and the `PreToolUse` hook are done. **Iteration 2 is staged**: the training script now takes `--model` presets and `train/seccal_colab_qwen3-4b.ipynb` retrains on `Qwen3-4B-Instruct-2507` (Apache-2.0, same prompt format) for comparison against the iteration-1 numbers above; see `train/README.md`. Remaining: run that retrain and eval, install the hook in real sessions with `SECCAL_LOG` on to collect live decisions, and generate the next batch targeting ASK / goal-flip pairs / obfuscation and judge-injection (both under target).
 
 A source-only security audit (Cloudflare security-audit skill, quick profile) was run on this repository; its artifacts live outside the repo. Before registering the hook in real sessions, apply its recommendations: ask/deny-only mode, isolate the hook's code from the working tree, authenticate the local verdict server, cap `tool_input` size, anchor and widen the matcher, and fix the fail-closed exception gap. The notebook bundle integrity check it recommended is implemented (`make_colab_notebook.py --check`).
+
+## Proposed: seccal as an MCP gateway
+
+Design only; nothing under this heading is implemented. The `PreToolUse` hook covers Claude Code's built-in tools (Bash, Edit, Read, …). The same model could also sit in front of MCP servers as a proxy, so one local judge covers every MCP client (Claude Code, Cursor, OpenHands, custom agents, subagents) and every upstream server at once.
+
+```mermaid
+flowchart LR
+    A["MCP client<br/>(Claude Code, Cursor, OpenHands, subagent …)"]
+    H[/"session goal<br/>set by harness or operator,<br/>never writable by the agent"/]
+
+    subgraph gw["seccal-gateway (MCP server to the client, MCP client to upstreams)"]
+        direction LR
+        G1["tools/list passthrough<br/>namespaced per upstream"]
+        G2["pre-model guards<br/>size cap · static allow/deny lists<br/>fail-open / fail-closed switch"]
+        G3["render prompt<br/>common.render_user_prompt(goal, tool, args)"]
+        G4{verdict}
+        L[("decisions.jsonl<br/>SECCAL_LOG format")]
+    end
+
+    S["local llama-server<br/>seccal Q4_K_M + seccal.gbnf<br/>temperature 0"]
+
+    subgraph up["upstream MCP servers"]
+        direction TB
+        M1[filesystem]
+        M2[github]
+        M3[db / http / …]
+    end
+
+    subgraph out["what the client gets back"]
+        direction TB
+        R1["upstream result, untouched"]
+        R2["tool error naming the category"]
+        R3["elicitation: user confirms yes/no<br/>(no elicitation support: deny)"]
+    end
+
+    A -- "tools/list" --> G1 -. forwards .-> up
+    A -- "tools/call" --> G2 --> G3
+    H --> G3
+    G3 -- "chat/completions<br/>(shared secret)" --> S
+    S -- "action + category JSON" --> G4
+    G4 -- "ALLOW" --> up --> R1
+    G4 -- "BLOCK" --> R2
+    G4 -- "ASK" --> R3
+    G4 -.-> L
+```
+
+How a call moves through it:
+
+1. **Discovery passes through.** `tools/list` forwards each upstream's tools, namespaced by server, so the agent sees the same catalog it would without the proxy.
+2. **Guards run before the model.** A size cap on arguments, static allow/deny lists by tool name, and a shared secret to the llama-server (all from the security audit's recommendations). Fail-open vs fail-closed is an explicit switch.
+3. **Every `tools/call` is judged** with the same prompt bytes as training, from the session goal, tool name, and arguments.
+4. **Verdicts map to MCP behaviour.** ALLOW forwards the call and returns the upstream result untouched. BLOCK never reaches the upstream and returns a tool error naming the category, so the agent sees a refusal rather than a hang. ASK uses MCP elicitation to show the call to the user and wait for confirmation; clients without elicitation get a configurable fallback, deny by default.
+5. **Injection is caught one step late, by design.** The gateway does not scan tool results for hidden instructions. If a result says "now run this", the agent's next call is judged against the user's goal and lands as `injected_action`.
+6. **Every decision is logged** in the hook's `SECCAL_LOG` format, so gateway traffic feeds the same active-learning batch.
+
+Open problems before building it:
+
+- **Goal provenance.** MCP has no notion of the user's goal, and the gateway cannot read the client's transcript the way the hook does. The goal must come from something the agent cannot write (an init parameter or header set by the harness, or an operator-set session goal). A `set_goal` tool exposed to the agent is the obvious shortcut and the wrong one: an injected agent would rewrite the goal to match the attack.
+- **Coverage.** The gateway only sees MCP tools; built-in tools still need the hook. Both can share one llama-server.
+- **Data mismatch.** Training rows are 61% Bash and 9% MCP, so the model is weakest on exactly the calls the gateway would judge. A batch of MCP-shaped rows with goal-flip pairs should precede this.
