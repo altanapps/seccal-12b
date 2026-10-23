@@ -57,4 +57,6 @@ The untrained base model allowed 45 of 49 calls and blocked nothing. Over test +
 
 ### Status and next steps
 
-Dataset (500 rows), first fine-tune, eval, serving, and the `PreToolUse` hook are done. Remaining: install the hook in real sessions with `SECCAL_LOG` on to collect live decisions, generate the next batch targeting ASK / goal-flip pairs / obfuscation and judge-injection (both under target), and retrain.
+Dataset (500 rows), first fine-tune, eval, serving, and the `PreToolUse` hook are done. **Iteration 2 is staged**: the training script now takes `--model` presets and `train/seccal_colab_qwen3-4b.ipynb` retrains on `Qwen3-4B-Instruct-2507` (Apache-2.0, same prompt format) for comparison against the iteration-1 numbers above; see `train/README.md`. Remaining: run that retrain and eval, install the hook in real sessions with `SECCAL_LOG` on to collect live decisions, and generate the next batch targeting ASK / goal-flip pairs / obfuscation and judge-injection (both under target).
+
+A source-only security audit (Cloudflare security-audit skill, quick profile) was run on this repository; its artifacts live outside the repo. Before registering the hook in real sessions, apply its recommendations: ask/deny-only mode, isolate the hook's code from the working tree, authenticate the local verdict server, cap `tool_input` size, anchor and widen the matcher, and fix the fail-closed exception gap. The notebook bundle integrity check it recommended is implemented (`make_colab_notebook.py --check`).
