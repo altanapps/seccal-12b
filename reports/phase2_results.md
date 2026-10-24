@@ -6,23 +6,25 @@ The runner uses a process lock, confirms each server exits, checks estimated mem
 
 ## Best-to-worst model ranking
 
-One row per model, selecting its best measured prompt on the same 52-row validation set. Ranked by action accuracy, then fewer BLOCK→ALLOW misses, higher BLOCK recall, ASK recall, pair consistency and lower p95 latency. Only complete, error-free runs qualify. This is a validation selection ranking, not an independent test or a production-safety ranking; choosing the prompt on these same rows can overestimate performance. Safeguard uses a larger reasoning budget.
+One row per base checkpoint or fine-tuned quantization, selecting its best measured prompt on the same 52-row validation set. Ranked by action accuracy, then fewer BLOCK→ALLOW misses, higher BLOCK recall, ASK recall, pair consistency and lower p95 latency. Only complete, error-free runs qualify. This is a validation selection ranking, not an independent test or a production-safety ranking; choosing the prompt on these same rows can overestimate performance. Safeguard uses a larger reasoning budget. The two historical seccal fine-tuned quantizations use the original prompt; all 52 IDs, inputs and labels were verified against the current canonical validation set. Their concurrency-4 latencies are excluded from speed comparisons and latency tie-breaks.
 
-| rank | model | selected prompt / track | correct | BLOCK→ALLOW / 15 | BLOCK / 15 | ASK / 9 | p95 s |
-|---|---|---|---|---|---|---|---|
-| 1 | [**qwen3.8-27b — BEST measured accuracy**](eval_base-qwen3.8-27b-ud-q4_k_m-val-policy.md) | policy / direct | 44/52 (84.6%) | 0 | 14 | 2 | 1.325 |
-| 2 | [ministral3-3b](eval_base-ministral3-3b-q4_k_m-val-policy.md) | policy / direct | 42/52 (80.8%) | 0 | 15 | 0 | 0.220 |
-| 3 | [qwen3.5-9b](eval_base-qwen3.5-9b-q4_k_m-val-policy.md) | policy / direct | 41/52 (78.8%) | 2 | 13 | 0 | 0.456 |
-| 4 | [gpt-oss-safeguard-20b](eval_base-gpt-oss-safeguard-20b-q4_k_m-val-policy-reasoning.md) | policy / reasoning | 41/52 (78.8%) | 3 | 11 | 2 | 2.656 |
-| 5 | [qwen3-4b](eval_base-qwen3-4b-q4_k_m-val-policy.md) | policy / direct | 40/52 (76.9%) | 0 | 10 | 2 | 0.243 |
-| 6 | [qwen3.5-4b](eval_base-qwen3.5-4b-q4_k_m-val-original.md) | original / direct | 40/52 (76.9%) | 2 | 13 | 0 | 0.329 |
-| 7 | [gemma4-e2b](eval_base-gemma4-e2b-q4_k_m-val-policy.md) | policy / direct | 35/52 (67.3%) | 6 | 7 | 0 | 0.218 |
-| 8 | [smollm3-3b](eval_base-smollm3-3b-q4_k_m-val-original.md) | original / direct | 35/52 (67.3%) | 9 | 6 | 1 | 0.198 |
-| 9 | [granite4-micro](eval_base-granite4-micro-q4_k_m-val-original.md) | original / direct | 32/52 (61.5%) | 5 | 3 | 1 | 0.211 |
-| 10 | [phi4-mini](eval_base-phi4-mini-q4_k_m-val-policy.md) | policy / direct | 30/52 (57.7%) | 1 | 4 | 3 | 0.233 |
-| 11 | [lfm2.5-8b-a1b](eval_base-lfm2.5-8b-a1b-q4_k_m-val-original.md) | original / direct | 28/52 (53.8%) | 8 | 3 | 0 | 0.174 |
-| 12 | [lfm2-2.6b](eval_base-lfm2-2.6b-q4_k_m-val-policy.md) | policy / direct | 25/52 (48.1%) | 3 | 2 | 4 | 0.271 |
-| 13 | [lfm2.5-1.2b](eval_base-lfm2.5-1.2b-q4_k_m-val-original.md) | original / direct | 25/52 (48.1%) | 13 | 0 | 0 | 0.100 |
+| rank | model | checkpoint | selected prompt / track | correct | BLOCK→ALLOW / 15 | BLOCK / 15 | ASK / 9 | p95 s |
+|---|---|---|---|---|---|---|---|---|
+| 1 | [**qwen3.8-27b — BEST measured accuracy**](eval_base-qwen3.8-27b-ud-q4_k_m-val-policy.md) | base | policy / direct | 44/52 (84.6%) | 0 | 14 | 2 | 1.325 |
+| 2 | [ministral3-3b](eval_base-ministral3-3b-q4_k_m-val-policy.md) | base | policy / direct | 42/52 (80.8%) | 0 | 15 | 0 | 0.220 |
+| 3 | [qwen3.5-9b](eval_base-qwen3.5-9b-q4_k_m-val-policy.md) | base | policy / direct | 41/52 (78.8%) | 2 | 13 | 0 | 0.456 |
+| 4 | [gpt-oss-safeguard-20b](eval_base-gpt-oss-safeguard-20b-q4_k_m-val-policy-reasoning.md) | base | policy / reasoning | 41/52 (78.8%) | 3 | 11 | 2 | 2.656 |
+| 5 | [qwen3-4b](eval_base-qwen3-4b-q4_k_m-val-policy.md) | base | policy / direct | 40/52 (76.9%) | 0 | 10 | 2 | 0.243 |
+| 6 | [qwen3.5-4b](eval_base-qwen3.5-4b-q4_k_m-val-original.md) | base | original / direct | 40/52 (76.9%) | 2 | 13 | 0 | 0.329 |
+| 7 | [LFM2.5-1.2B seccal FT Q8_0](eval_ft-q8-val.md) | fine-tuned | original / direct | 39/52 (75.0%) | 3 | 12 | 1 | n/a (legacy c=4) |
+| 8 | [LFM2.5-1.2B seccal FT Q4_K_M](eval_ft-q4-val.md) | fine-tuned | original / direct | 37/52 (71.2%) | 2 | 11 | 1 | n/a (legacy c=4) |
+| 9 | [gemma4-e2b](eval_base-gemma4-e2b-q4_k_m-val-policy.md) | base | policy / direct | 35/52 (67.3%) | 6 | 7 | 0 | 0.218 |
+| 10 | [smollm3-3b](eval_base-smollm3-3b-q4_k_m-val-original.md) | base | original / direct | 35/52 (67.3%) | 9 | 6 | 1 | 0.198 |
+| 11 | [granite4-micro](eval_base-granite4-micro-q4_k_m-val-original.md) | base | original / direct | 32/52 (61.5%) | 5 | 3 | 1 | 0.211 |
+| 12 | [phi4-mini](eval_base-phi4-mini-q4_k_m-val-policy.md) | base | policy / direct | 30/52 (57.7%) | 1 | 4 | 3 | 0.233 |
+| 13 | [lfm2.5-8b-a1b](eval_base-lfm2.5-8b-a1b-q4_k_m-val-original.md) | base | original / direct | 28/52 (53.8%) | 8 | 3 | 0 | 0.174 |
+| 14 | [lfm2-2.6b](eval_base-lfm2-2.6b-q4_k_m-val-policy.md) | base | policy / direct | 25/52 (48.1%) | 3 | 2 | 4 | 0.271 |
+| 15 | [lfm2.5-1.2b](eval_base-lfm2.5-1.2b-q4_k_m-val-original.md) | base | original / direct | 25/52 (48.1%) | 13 | 0 | 0 | 0.100 |
 
 **Best measured accuracy: Qwen3.8-27B, policy prompt — 44/52 (84.6%), zero observed BLOCK→ALLOW misses, p95 1.325 s.** **Best fast local candidate: Ministral-3-3B, policy prompt — 42/52 (80.8%), zero observed BLOCK→ALLOW misses, p95 0.220 s.** Its ASK recall is 0/9; Qwen's is 2/9. Both still need evaluation beyond this small selection set.
 
@@ -75,4 +77,4 @@ Blind local reviews use Qwen3.8-27B and Safeguard, with no generator labels or m
 
 Keep Ministral-3-3B and Qwen3-4B as the small-model post-training candidates. Qwen3.8-27B is a useful larger reference within the current memory cap, but its latency and small validation sample do not establish an inline deployment advantage. Weak zero-shot results for another family do not prove that task-specific SFT would fail.
 
-Per-row results, model/data/prompt hashes, server commands and memory evidence are in `eval/out/` and `out/` (gitignored). [Combined base-model results](base_model_comparison.md), [fit catalog](model_selection_plan.md), [evaluation workflow](../eval/README.md).
+Per-row results, model/data/prompt hashes, server commands and memory evidence are in `eval/out/` and `out/` (gitignored). [Combined base and fine-tuned results](base_model_comparison.md), [fit catalog](model_selection_plan.md), [evaluation workflow](../eval/README.md).

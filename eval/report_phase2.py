@@ -70,7 +70,7 @@ def main():
         "reference within the current memory cap, but its latency and small validation sample do not establish an inline "
         "deployment advantage. Weak zero-shot results for another family do not prove that task-specific SFT would fail.", "",
         "Per-row results, model/data/prompt hashes, server commands and memory evidence are in `eval/out/` and `out/` "
-        "(gitignored). [Combined base-model results](base_model_comparison.md), [fit catalog](model_selection_plan.md), "
+        "(gitignored). [Combined base and fine-tuned results](base_model_comparison.md), [fit catalog](model_selection_plan.md), "
         "[evaluation workflow](../eval/README.md).", ""]
     path=ROOT / 'reports/phase2_results.md';path.write_text('\n'.join(lines));print(path)
 

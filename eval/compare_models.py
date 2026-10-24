@@ -2,12 +2,8 @@
 """Build a validation leaderboard from local model sweep summaries."""
 from __future__ import annotations
 
-import json
-from pathlib import Path
-
 from download_models import ROOT, load_models, model_path
-from metrics import summarize
-from rank_models import load_results, ranking_markdown, rank_key
+from rank_models import load_results, ranking_markdown, rank_key, latency_text, update_readme
 
 
 def pct(metric):
@@ -17,11 +13,11 @@ def pct(metric):
 def main():
     catalog = load_models()
     summaries = load_results()
-    lines = ["# Local base-model comparison", "",
+    lines = ["# Local model comparison: base and fine-tuned", "",
              "Selection set: the existing 52 validation rows (28 ALLOW, 9 ASK, 15 BLOCK; 10 contrast pairs). "
              "The frozen 49-row test set has not been run in this sweep. "
              "These small samples cannot establish production safety; even 0/15 attack misses has a roughly 20% Wilson upper bound.", "",
-             "Direct runs use one server slot, request concurrency 1, two unscored warmups, temperature 0, "
+             "New direct runs use one server slot, request concurrency 1, two unscored warmups, temperature 0, "
              "the repository verdict grammar, 4096-token context and thinking disabled. Reasoning runs are labeled separately, "
              "with low effort, 256 thinking tokens, a 1024-token total output budget and final-answer JSON schema. Original and policy prompts are separate tracks. "
              "The policy track appends the existing labeling policy, which is not the prompt used to train iteration 1.", "",
@@ -32,8 +28,8 @@ def main():
              "|---|---|---|---|---|---|---|---|---|---|"]
     for s in sorted(summaries, key=lambda s: (s["prompt_mode"], bool(s["metrics"]["error_rate"]["hits"]), rank_key(s))):
         m, lat = s["metrics"], s["latency_s"]
-        time_text = f"{lat['p50']:.3f} / {lat['p95']:.3f}" if lat["p50"] is not None else "n/a"
-        label = s["provenance"].get("model_id", s["name"])
+        time_text = latency_text(s, ("p50", "p95"))
+        label = s["provenance"].get("display_name", s["provenance"].get("model_id", s["name"]))
         if s["provenance"].get("track") == "reasoning":label += " (reasoning)"
         if m["error_rate"]["hits"] == s["rows"]:
             lines.append(f"| {label} / {s['prompt_mode']} | protocol failure | n/a | n/a | n/a | n/a | n/a | n/a | {time_text} | {s['rows']} |")
@@ -42,14 +38,6 @@ def main():
                      f"{pct(m['block_recall'])} | {m['attack_miss']['hits']}/{m['attack_miss']['n']} | "
                      f"{pct(m['ask_recall'])} | {pct(m['allow_precision'])} | {pct(m['false_block'])} | "
                      f"{pct(m['pair_consistency'])} | {time_text} | {m['error_rate']['hits']} |")
-    historical = ROOT / "eval/out/ft-q4-val.jsonl"
-    if historical.exists():
-        predictions = [json.loads(line) for line in historical.read_text().splitlines() if line.strip()]
-        m = summarize(predictions)
-        lines += ["", "Historical iteration-1 fine-tuned LFM Q4 on the same validation split: "
-                  f"{m['action_accuracy']['hits']}/52 correct, BLOCK recall {pct(m['block_recall'])}, "
-                  f"BLOCK→ALLOW {m['attack_miss']['hits']}/15, ASK recall {pct(m['ask_recall'])}. "
-                  "Its old latency numbers used different concurrency and are not comparable to this sweep."]
     lines += ["", "## Downloads and runtime evidence", "",
               "Artifact sizes are decimal GB. RSS is sampled process resident memory, not total unified-memory use; "
               "do not interpret it as the full Metal allocation or use it alone to certify a fit.", "",
@@ -68,6 +56,7 @@ def main():
               "Full per-row predictions, model revisions, artifact hashes, prompt/dataset hashes and server commands are in `eval/out/` (gitignored).", ""]
     target = ROOT / "reports/base_model_comparison.md"
     target.write_text("\n".join(lines))
+    update_readme(summaries)
     print(target)
     return 0
 

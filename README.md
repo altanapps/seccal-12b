@@ -6,9 +6,46 @@ On-device tool-call risk scorer: a fine-tuned `LiquidAI/LFM2.5-1.2B-Instruct` th
 
 **Best measured base checkpoint: Qwen3.8-27B (policy prompt), 44/52 correct (84.6%), zero observed BLOCK→ALLOW misses out of 15, p95 latency 1.325 s.** Here “base” means before seccal fine-tuning; these are publisher instruction checkpoints.
 
-**Best fast local candidate: Ministral-3-3B (policy prompt), 42/52 correct (80.8%), zero observed BLOCK→ALLOW misses, p95 0.220 s.** Qwen3.5-9B follows at 41/52 (78.8%), with two BLOCK→ALLOW misses. The [full best-to-worst ranking](reports/base_model_comparison.md#best-to-worst-model-ranking) covers all 13 models with successful runs, selecting each model's best measured prompt and showing safety metrics alongside accuracy. LFM2.5-2.6B requires a protocol adapter and is unranked.
+**Best fast local candidate: Ministral-3-3B (policy prompt), 42/52 correct (80.8%), zero observed BLOCK→ALLOW misses, p95 0.220 s.** The ranking below includes 13 base checkpoints and both quantizations of the previous seccal fine-tune, all on the same validation set. Here base checkpoints have no seccal training; the fine-tuned entries are the iteration-1 LoRA exports. LFM2.5-2.6B requires a protocol adapter and is unranked.
 
-These are results on the **52-row validation selection set**, with one request at a time; they are separate from the historical test results below. The winner still recognizes only 2/9 ASK calls, and Ministral recognizes 0/9. Prompt selection on the same small set can overestimate performance. No new scores are claimed on the 49-row test set or the new holdout.
+### Best-to-worst ranking — same 52 validation rows
+
+Ranked by action accuracy, then fewer BLOCK→ALLOW misses, higher BLOCK recall, ASK recall, pair consistency and comparable p95 latency. Each base model uses its best measured prompt. The fine-tuned Q4_K_M and Q8_0 use the original training prompt, and all 52 saved IDs, inputs and labels match the current canonical validation split. Qwen3.8-27B remains the highest-accuracy entry; the previous fine-tuned Q8_0 ranks 7th and Q4_K_M ranks 8th.
+
+<!-- validation-ranking:start -->
+
+| rank | model | checkpoint | selected prompt / track | correct | BLOCK→ALLOW / 15 | BLOCK / 15 | ASK / 9 | p95 s |
+|---|---|---|---|---|---|---|---|---|
+| 1 | [**qwen3.8-27b — BEST measured accuracy**](reports/eval_base-qwen3.8-27b-ud-q4_k_m-val-policy.md) | base | policy / direct | 44/52 (84.6%) | 0 | 14 | 2 | 1.325 |
+| 2 | [ministral3-3b](reports/eval_base-ministral3-3b-q4_k_m-val-policy.md) | base | policy / direct | 42/52 (80.8%) | 0 | 15 | 0 | 0.220 |
+| 3 | [qwen3.5-9b](reports/eval_base-qwen3.5-9b-q4_k_m-val-policy.md) | base | policy / direct | 41/52 (78.8%) | 2 | 13 | 0 | 0.456 |
+| 4 | [gpt-oss-safeguard-20b](reports/eval_base-gpt-oss-safeguard-20b-q4_k_m-val-policy-reasoning.md) | base | policy / reasoning | 41/52 (78.8%) | 3 | 11 | 2 | 2.656 |
+| 5 | [qwen3-4b](reports/eval_base-qwen3-4b-q4_k_m-val-policy.md) | base | policy / direct | 40/52 (76.9%) | 0 | 10 | 2 | 0.243 |
+| 6 | [qwen3.5-4b](reports/eval_base-qwen3.5-4b-q4_k_m-val-original.md) | base | original / direct | 40/52 (76.9%) | 2 | 13 | 0 | 0.329 |
+| 7 | [LFM2.5-1.2B seccal FT Q8_0](reports/eval_ft-q8-val.md) | fine-tuned | original / direct | 39/52 (75.0%) | 3 | 12 | 1 | n/a (legacy c=4) |
+| 8 | [LFM2.5-1.2B seccal FT Q4_K_M](reports/eval_ft-q4-val.md) | fine-tuned | original / direct | 37/52 (71.2%) | 2 | 11 | 1 | n/a (legacy c=4) |
+| 9 | [gemma4-e2b](reports/eval_base-gemma4-e2b-q4_k_m-val-policy.md) | base | policy / direct | 35/52 (67.3%) | 6 | 7 | 0 | 0.218 |
+| 10 | [smollm3-3b](reports/eval_base-smollm3-3b-q4_k_m-val-original.md) | base | original / direct | 35/52 (67.3%) | 9 | 6 | 1 | 0.198 |
+| 11 | [granite4-micro](reports/eval_base-granite4-micro-q4_k_m-val-original.md) | base | original / direct | 32/52 (61.5%) | 5 | 3 | 1 | 0.211 |
+| 12 | [phi4-mini](reports/eval_base-phi4-mini-q4_k_m-val-policy.md) | base | policy / direct | 30/52 (57.7%) | 1 | 4 | 3 | 0.233 |
+| 13 | [lfm2.5-8b-a1b](reports/eval_base-lfm2.5-8b-a1b-q4_k_m-val-original.md) | base | original / direct | 28/52 (53.8%) | 8 | 3 | 0 | 0.174 |
+| 14 | [lfm2-2.6b](reports/eval_base-lfm2-2.6b-q4_k_m-val-policy.md) | base | policy / direct | 25/52 (48.1%) | 3 | 2 | 4 | 0.271 |
+| 15 | [lfm2.5-1.2b](reports/eval_base-lfm2.5-1.2b-q4_k_m-val-original.md) | base | original / direct | 25/52 (48.1%) | 13 | 0 | 0 | 0.100 |
+
+<!-- validation-ranking:end -->
+
+BLOCK→ALLOW counts dangerous misses; BLOCK and ASK columns count correct predictions within each gold class. Historical fine-tune latency is marked **n/a (legacy c=4)** because those runs used concurrency 4, while the new base runs used concurrency 1. The old p95 values (Q4: 0.277 s, Q8: 0.282 s) remain in their linked reports but are excluded from speed comparisons and latency tie-breaks. Safeguard has a larger reasoning budget than the direct classifiers. The [detailed comparison](reports/base_model_comparison.md) includes all prompt variants and safety metrics.
+
+These are results on the **52-row validation selection set** (28 ALLOW, nine ASK, 15 BLOCK; ten contrast pairs), separate from the historical 49-row test results below. The winner recognizes only 2/9 ASK calls, and Ministral recognizes 0/9. Prompt selection on the same small set can overestimate performance. No new scores are claimed on the 49-row test set or the new holdout.
+
+To regenerate this table and the reports from the committed metrics, without downloading or loading a model:
+
+```bash
+python3 eval/compare_models.py
+python3 eval/report_phase2.py
+```
+
+To import any newer local evaluation results first, run `python3 eval/rank_models.py`. The recorded snapshot includes both historical fine-tunes, so a fresh checkout can reproduce the ranking without the gitignored prediction files.
 
 Models were loaded one at a time with a 24 GB runtime budget and an early-stop watchdog; the maximum sampled inference/review memory was **20.73 GB**. **The 35B model remains deferred and was not downloaded or loaded.** Local MLX training pilots completed one optimizer update each at about 5 GB; full fine-tunes have not run. The new 314-call holdout is model-reviewed and author-adjudicated synthetic data, not human-verified ground truth.
 

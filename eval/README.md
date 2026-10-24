@@ -27,8 +27,13 @@ python3 eval/report_phase2.py
 The Markdown reports rank each model's best error-free validation run by action
 accuracy. Ties use fewer BLOCK→ALLOW misses, higher BLOCK recall, ASK recall,
 pair consistency and lower p95 latency. The recorded JSON snapshot includes all
-26 runs (25 successful and one protocol failure), metrics, hashes and portable
-server commands. Report generation can use this snapshot on a fresh checkout
+28 runs (25 successful base runs, two historical fine-tuned runs and one protocol
+failure), metrics, hashes and portable server commands for the new runs.
+Both historical quantizations use the original prompt. Their 52 IDs, inputs and
+labels are verified against the canonical validation set when importing saved
+predictions. Legacy concurrency-4 latency is excluded from speed comparisons and
+latency tie-breaks. Report generation also updates the combined table directly
+in the main `README.md`. Report generation can use this snapshot on a fresh checkout
 without downloading or loading any model. `rank_models.py` updates the snapshot
 from local results; the other two commands regenerate the Markdown reports.
 

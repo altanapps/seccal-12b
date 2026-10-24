@@ -12189,6 +12189,871 @@
         "p95": 0.192,
         "note": "wall time includes server queueing; compare single-concurrency warmed runs"
       }
+    },
+    {
+      "name": "ft-q4-val",
+      "split": "val",
+      "rows": 52,
+      "prompt_mode": "original",
+      "dataset_sha256": "f358e9469662782190610b2c535c4b165e347f16e0116f61cc745396a1ad33bb",
+      "concurrency": 4,
+      "provenance": {
+        "model_id": "lfm2.5-1.2b-seccal-ft-q4",
+        "display_name": "LFM2.5-1.2B seccal FT Q4_K_M",
+        "source_model": "LiquidAI/LFM2.5-1.2B-Instruct",
+        "checkpoint_kind": "fine-tuned",
+        "quantization": "Q4_K_M",
+        "track": "direct",
+        "historical": true,
+        "source_predictions_sha256": "90e0173dcb462022c4d05b6780b0f5c9bbce347692fcbaf6e5a8a36123be5cd5",
+        "validation_verification": "All 52 unique IDs and every canonical field match the current validation split.",
+        "runtime_note": "Historical concurrency 4; latency is not comparable to the new concurrency-1 sweep. Runtime/model revision metadata was not recorded."
+      },
+      "metrics": {
+        "allow_recall": {
+          "value": 0.8928571428571429,
+          "hits": 25,
+          "n": 28,
+          "ci95": [
+            0.7280414845132785,
+            0.9628816331707
+          ]
+        },
+        "allow_precision": {
+          "value": 0.8064516129032258,
+          "hits": 25,
+          "n": 31,
+          "ci95": [
+            0.6371974218820453,
+            0.908129916384139
+          ]
+        },
+        "ask_recall": {
+          "value": 0.1111111111111111,
+          "hits": 1,
+          "n": 9,
+          "ci95": [
+            0.019890887638544907,
+            0.434999705576656
+          ]
+        },
+        "ask_precision": {
+          "value": 0.25,
+          "hits": 1,
+          "n": 4,
+          "ci95": [
+            0.04558726080970055,
+            0.6993581574175981
+          ]
+        },
+        "block_recall": {
+          "value": 0.7333333333333333,
+          "hits": 11,
+          "n": 15,
+          "ci95": [
+            0.4804956594401943,
+            0.8910254667430761
+          ]
+        },
+        "block_precision": {
+          "value": 0.6470588235294118,
+          "hits": 11,
+          "n": 17,
+          "ci95": [
+            0.41300363485218694,
+            0.8269027960275627
+          ]
+        },
+        "attack_miss": {
+          "value": 0.13333333333333333,
+          "hits": 2,
+          "n": 15,
+          "ci95": [
+            0.03736125910306537,
+            0.37881982832322364
+          ]
+        },
+        "false_block": {
+          "value": 0.07142857142857142,
+          "hits": 2,
+          "n": 28,
+          "ci95": [
+            0.019812064115305755,
+            0.22645362568399052
+          ]
+        },
+        "action_accuracy": {
+          "value": 0.7115384615384616,
+          "hits": 37,
+          "n": 52,
+          "ci95": [
+            0.5772721196331574,
+            0.8167003958529009
+          ]
+        },
+        "error_rate": {
+          "value": 0.0,
+          "hits": 0,
+          "n": 52,
+          "ci95": [
+            0,
+            0.06879223612386234
+          ]
+        },
+        "balanced_accuracy": 0.5791005291005291,
+        "macro_f1": 0.5629345936549326,
+        "goal_flip_consistency": {
+          "value": 0.2,
+          "hits": 1,
+          "n": 5,
+          "ci95": [
+            0.03622410863243014,
+            0.6244653702374747
+          ]
+        },
+        "twin_consistency": {
+          "value": 0.4,
+          "hits": 2,
+          "n": 5,
+          "ci95": [
+            0.11762077423264783,
+            0.769275718723987
+          ]
+        },
+        "pair_consistency": {
+          "value": 0.3,
+          "hits": 3,
+          "n": 10,
+          "ci95": [
+            0.10779126740630099,
+            0.6032218525388546
+          ]
+        },
+        "slices": {
+          "tool_name": {
+            "Bash": {
+              "accuracy": {
+                "value": 0.6363636363636364,
+                "hits": 21,
+                "n": 33,
+                "ci95": [
+                  0.466161783022664,
+                  0.7781282176475764
+                ]
+              },
+              "errors": 0
+            },
+            "Edit": {
+              "accuracy": {
+                "value": 0.75,
+                "hits": 3,
+                "n": 4,
+                "ci95": [
+                  0.30064184258240184,
+                  0.9544127391902995
+                ]
+              },
+              "errors": 0
+            },
+            "Read": {
+              "accuracy": {
+                "value": 0.8333333333333334,
+                "hits": 5,
+                "n": 6,
+                "ci95": [
+                  0.43649717781352987,
+                  0.9699466302516935
+                ]
+              },
+              "errors": 0
+            },
+            "WebFetch": {
+              "accuracy": {
+                "value": 1.0,
+                "hits": 2,
+                "n": 2,
+                "ci95": [
+                  0.34238022750665303,
+                  1
+                ]
+              },
+              "errors": 0
+            },
+            "Write": {
+              "accuracy": {
+                "value": 0.75,
+                "hits": 3,
+                "n": 4,
+                "ci95": [
+                  0.30064184258240184,
+                  0.9544127391902995
+                ]
+              },
+              "errors": 0
+            },
+            "mcp": {
+              "accuracy": {
+                "value": 1.0,
+                "hits": 3,
+                "n": 3,
+                "ci95": [
+                  0.4385029682449546,
+                  1
+                ]
+              },
+              "errors": 0
+            }
+          },
+          "kind": {
+            "benign": {
+              "accuracy": {
+                "value": 0.8823529411764706,
+                "hits": 15,
+                "n": 17,
+                "ci95": [
+                  0.6566364940511412,
+                  0.9671202262362074
+                ]
+              },
+              "errors": 0
+            },
+            "benign_hard": {
+              "accuracy": {
+                "value": 0.9090909090909091,
+                "hits": 10,
+                "n": 11,
+                "ci95": [
+                  0.6226415635484043,
+                  0.9837678271141151
+                ]
+              },
+              "errors": 0
+            },
+            "injected": {
+              "accuracy": {
+                "value": 0.7857142857142857,
+                "hits": 11,
+                "n": 14,
+                "ci95": [
+                  0.524107694133997,
+                  0.9242861328730683
+                ]
+              },
+              "errors": 0
+            },
+            "reckless": {
+              "accuracy": {
+                "value": 0.1,
+                "hits": 1,
+                "n": 10,
+                "ci95": [
+                  0.017876213095072896,
+                  0.4041500267952385
+                ]
+              },
+              "errors": 0
+            }
+          },
+          "category": {
+            "benign": {
+              "accuracy": {
+                "value": 0.8928571428571429,
+                "hits": 25,
+                "n": 28,
+                "ci95": [
+                  0.7280414845132785,
+                  0.9628816331707
+                ]
+              },
+              "errors": 0
+            },
+            "credential_access": {
+              "accuracy": {
+                "value": 0.3333333333333333,
+                "hits": 1,
+                "n": 3,
+                "ci95": [
+                  0.06149194472039621,
+                  0.7923403991979522
+                ]
+              },
+              "errors": 0
+            },
+            "destructive": {
+              "accuracy": {
+                "value": 0.3333333333333333,
+                "hits": 3,
+                "n": 9,
+                "ci95": [
+                  0.1205838183869109,
+                  0.6457978644196036
+                ]
+              },
+              "errors": 0
+            },
+            "exfiltration": {
+              "accuracy": {
+                "value": 1.0,
+                "hits": 3,
+                "n": 3,
+                "ci95": [
+                  0.4385029682449546,
+                  1
+                ]
+              },
+              "errors": 0
+            },
+            "injected_action": {
+              "accuracy": {
+                "value": 0.3333333333333333,
+                "hits": 1,
+                "n": 3,
+                "ci95": [
+                  0.06149194472039621,
+                  0.7923403991979522
+                ]
+              },
+              "errors": 0
+            },
+            "persistence": {
+              "accuracy": {
+                "value": 1.0,
+                "hits": 1,
+                "n": 1,
+                "ci95": [
+                  0.20654931437723745,
+                  1
+                ]
+              },
+              "errors": 0
+            },
+            "reckless": {
+              "accuracy": {
+                "value": 0.5,
+                "hits": 1,
+                "n": 2,
+                "ci95": [
+                  0.09453120573423074,
+                  0.9054687942657693
+                ]
+              },
+              "errors": 0
+            },
+            "remote_code_exec": {
+              "accuracy": {
+                "value": 0.6666666666666666,
+                "hits": 2,
+                "n": 3,
+                "ci95": [
+                  0.2076596008020477,
+                  0.9385080552796037
+                ]
+              },
+              "errors": 0
+            }
+          },
+          "obfuscated": {
+            "False": {
+              "accuracy": {
+                "value": 0.7,
+                "hits": 35,
+                "n": 50,
+                "ci95": [
+                  0.562496495355466,
+                  0.8089644649911906
+                ]
+              },
+              "errors": 0
+            },
+            "True": {
+              "accuracy": {
+                "value": 1.0,
+                "hits": 2,
+                "n": 2,
+                "ci95": [
+                  0.34238022750665303,
+                  1
+                ]
+              },
+              "errors": 0
+            }
+          },
+          "judge_injection": {
+            "False": {
+              "accuracy": {
+                "value": 0.72,
+                "hits": 36,
+                "n": 50,
+                "ci95": [
+                  0.5833487630404344,
+                  0.8252582933408878
+                ]
+              },
+              "errors": 0
+            },
+            "True": {
+              "accuracy": {
+                "value": 0.5,
+                "hits": 1,
+                "n": 2,
+                "ci95": [
+                  0.09453120573423074,
+                  0.9054687942657693
+                ]
+              },
+              "errors": 0
+            }
+          }
+        },
+        "confusion": {
+          "ALLOW->ALLOW": 25,
+          "BLOCK->BLOCK": 11,
+          "ALLOW->ASK": 1,
+          "ASK->ALLOW": 4,
+          "ALLOW->BLOCK": 2,
+          "ASK->BLOCK": 4,
+          "ASK->ASK": 1,
+          "BLOCK->ALLOW": 2,
+          "BLOCK->ASK": 2
+        }
+      },
+      "latency_s": {
+        "p50": 0.231,
+        "p95": 0.277,
+        "note": "Historical concurrency 4; excluded from ranking latency tie-breaks."
+      }
+    },
+    {
+      "name": "ft-q8-val",
+      "split": "val",
+      "rows": 52,
+      "prompt_mode": "original",
+      "dataset_sha256": "f358e9469662782190610b2c535c4b165e347f16e0116f61cc745396a1ad33bb",
+      "concurrency": 4,
+      "provenance": {
+        "model_id": "lfm2.5-1.2b-seccal-ft-q8",
+        "display_name": "LFM2.5-1.2B seccal FT Q8_0",
+        "source_model": "LiquidAI/LFM2.5-1.2B-Instruct",
+        "checkpoint_kind": "fine-tuned",
+        "quantization": "Q8_0",
+        "track": "direct",
+        "historical": true,
+        "source_predictions_sha256": "0cd826f23b2f82aece78f74547b76780ed4a6c53d52cff4b9c578f6de0cfba12",
+        "validation_verification": "All 52 unique IDs and every canonical field match the current validation split.",
+        "runtime_note": "Historical concurrency 4; latency is not comparable to the new concurrency-1 sweep. Runtime/model revision metadata was not recorded."
+      },
+      "metrics": {
+        "allow_recall": {
+          "value": 0.9285714285714286,
+          "hits": 26,
+          "n": 28,
+          "ci95": [
+            0.7735463743160095,
+            0.9801879358846942
+          ]
+        },
+        "allow_precision": {
+          "value": 0.7878787878787878,
+          "hits": 26,
+          "n": 33,
+          "ci95": [
+            0.6224835500784931,
+            0.8932397846697919
+          ]
+        },
+        "ask_recall": {
+          "value": 0.1111111111111111,
+          "hits": 1,
+          "n": 9,
+          "ci95": [
+            0.019890887638544907,
+            0.434999705576656
+          ]
+        },
+        "ask_precision": {
+          "value": 0.5,
+          "hits": 1,
+          "n": 2,
+          "ci95": [
+            0.09453120573423074,
+            0.9054687942657693
+          ]
+        },
+        "block_recall": {
+          "value": 0.8,
+          "hits": 12,
+          "n": 15,
+          "ci95": [
+            0.5481455128483065,
+            0.9295245065301844
+          ]
+        },
+        "block_precision": {
+          "value": 0.7058823529411765,
+          "hits": 12,
+          "n": 17,
+          "ci95": [
+            0.4686688993346016,
+            0.8672001038970478
+          ]
+        },
+        "attack_miss": {
+          "value": 0.2,
+          "hits": 3,
+          "n": 15,
+          "ci95": [
+            0.07047549346981563,
+            0.45185448715169363
+          ]
+        },
+        "false_block": {
+          "value": 0.03571428571428571,
+          "hits": 1,
+          "n": 28,
+          "ci95": [
+            0.0063325198490377516,
+            0.1771219774335332
+          ]
+        },
+        "action_accuracy": {
+          "value": 0.75,
+          "hits": 39,
+          "n": 52,
+          "ci95": [
+            0.6179354205740265,
+            0.8476684613640423
+          ]
+        },
+        "error_rate": {
+          "value": 0.0,
+          "hits": 0,
+          "n": 52,
+          "ci95": [
+            0,
+            0.06879223612386234
+          ]
+        },
+        "balanced_accuracy": 0.6132275132275132,
+        "macro_f1": 0.5947590660705414,
+        "goal_flip_consistency": {
+          "value": 0.2,
+          "hits": 1,
+          "n": 5,
+          "ci95": [
+            0.03622410863243014,
+            0.6244653702374747
+          ]
+        },
+        "twin_consistency": {
+          "value": 0.4,
+          "hits": 2,
+          "n": 5,
+          "ci95": [
+            0.11762077423264783,
+            0.769275718723987
+          ]
+        },
+        "pair_consistency": {
+          "value": 0.3,
+          "hits": 3,
+          "n": 10,
+          "ci95": [
+            0.10779126740630099,
+            0.6032218525388546
+          ]
+        },
+        "slices": {
+          "tool_name": {
+            "Bash": {
+              "accuracy": {
+                "value": 0.6666666666666666,
+                "hits": 22,
+                "n": 33,
+                "ci95": [
+                  0.4960789442780561,
+                  0.8024977232077931
+                ]
+              },
+              "errors": 0
+            },
+            "Edit": {
+              "accuracy": {
+                "value": 1.0,
+                "hits": 4,
+                "n": 4,
+                "ci95": [
+                  0.5101091635454027,
+                  1
+                ]
+              },
+              "errors": 0
+            },
+            "Read": {
+              "accuracy": {
+                "value": 0.8333333333333334,
+                "hits": 5,
+                "n": 6,
+                "ci95": [
+                  0.43649717781352987,
+                  0.9699466302516935
+                ]
+              },
+              "errors": 0
+            },
+            "WebFetch": {
+              "accuracy": {
+                "value": 1.0,
+                "hits": 2,
+                "n": 2,
+                "ci95": [
+                  0.34238022750665303,
+                  1
+                ]
+              },
+              "errors": 0
+            },
+            "Write": {
+              "accuracy": {
+                "value": 0.75,
+                "hits": 3,
+                "n": 4,
+                "ci95": [
+                  0.30064184258240184,
+                  0.9544127391902995
+                ]
+              },
+              "errors": 0
+            },
+            "mcp": {
+              "accuracy": {
+                "value": 1.0,
+                "hits": 3,
+                "n": 3,
+                "ci95": [
+                  0.4385029682449546,
+                  1
+                ]
+              },
+              "errors": 0
+            }
+          },
+          "kind": {
+            "benign": {
+              "accuracy": {
+                "value": 0.9411764705882353,
+                "hits": 16,
+                "n": 17,
+                "ci95": [
+                  0.7301796936242461,
+                  0.9895395990150025
+                ]
+              },
+              "errors": 0
+            },
+            "benign_hard": {
+              "accuracy": {
+                "value": 0.9090909090909091,
+                "hits": 10,
+                "n": 11,
+                "ci95": [
+                  0.6226415635484043,
+                  0.9837678271141151
+                ]
+              },
+              "errors": 0
+            },
+            "injected": {
+              "accuracy": {
+                "value": 0.7857142857142857,
+                "hits": 11,
+                "n": 14,
+                "ci95": [
+                  0.524107694133997,
+                  0.9242861328730683
+                ]
+              },
+              "errors": 0
+            },
+            "reckless": {
+              "accuracy": {
+                "value": 0.2,
+                "hits": 2,
+                "n": 10,
+                "ci95": [
+                  0.05668215145437519,
+                  0.5098375284633583
+                ]
+              },
+              "errors": 0
+            }
+          },
+          "category": {
+            "benign": {
+              "accuracy": {
+                "value": 0.9285714285714286,
+                "hits": 26,
+                "n": 28,
+                "ci95": [
+                  0.7735463743160095,
+                  0.9801879358846942
+                ]
+              },
+              "errors": 0
+            },
+            "credential_access": {
+              "accuracy": {
+                "value": 0.3333333333333333,
+                "hits": 1,
+                "n": 3,
+                "ci95": [
+                  0.06149194472039621,
+                  0.7923403991979522
+                ]
+              },
+              "errors": 0
+            },
+            "destructive": {
+              "accuracy": {
+                "value": 0.4444444444444444,
+                "hits": 4,
+                "n": 9,
+                "ci95": [
+                  0.18877852109766452,
+                  0.733348706504507
+                ]
+              },
+              "errors": 0
+            },
+            "exfiltration": {
+              "accuracy": {
+                "value": 1.0,
+                "hits": 3,
+                "n": 3,
+                "ci95": [
+                  0.4385029682449546,
+                  1
+                ]
+              },
+              "errors": 0
+            },
+            "injected_action": {
+              "accuracy": {
+                "value": 0.3333333333333333,
+                "hits": 1,
+                "n": 3,
+                "ci95": [
+                  0.06149194472039621,
+                  0.7923403991979522
+                ]
+              },
+              "errors": 0
+            },
+            "persistence": {
+              "accuracy": {
+                "value": 1.0,
+                "hits": 1,
+                "n": 1,
+                "ci95": [
+                  0.20654931437723745,
+                  1
+                ]
+              },
+              "errors": 0
+            },
+            "reckless": {
+              "accuracy": {
+                "value": 0.5,
+                "hits": 1,
+                "n": 2,
+                "ci95": [
+                  0.09453120573423074,
+                  0.9054687942657693
+                ]
+              },
+              "errors": 0
+            },
+            "remote_code_exec": {
+              "accuracy": {
+                "value": 0.6666666666666666,
+                "hits": 2,
+                "n": 3,
+                "ci95": [
+                  0.2076596008020477,
+                  0.9385080552796037
+                ]
+              },
+              "errors": 0
+            }
+          },
+          "obfuscated": {
+            "False": {
+              "accuracy": {
+                "value": 0.74,
+                "hits": 37,
+                "n": 50,
+                "ci95": [
+                  0.6044684273515117,
+                  0.8412847250644762
+                ]
+              },
+              "errors": 0
+            },
+            "True": {
+              "accuracy": {
+                "value": 1.0,
+                "hits": 2,
+                "n": 2,
+                "ci95": [
+                  0.34238022750665303,
+                  1
+                ]
+              },
+              "errors": 0
+            }
+          },
+          "judge_injection": {
+            "False": {
+              "accuracy": {
+                "value": 0.76,
+                "hits": 38,
+                "n": 50,
+                "ci95": [
+                  0.6258731624205708,
+                  0.8570260860300828
+                ]
+              },
+              "errors": 0
+            },
+            "True": {
+              "accuracy": {
+                "value": 0.5,
+                "hits": 1,
+                "n": 2,
+                "ci95": [
+                  0.09453120573423074,
+                  0.9054687942657693
+                ]
+              },
+              "errors": 0
+            }
+          }
+        },
+        "confusion": {
+          "ALLOW->ALLOW": 26,
+          "BLOCK->BLOCK": 12,
+          "ALLOW->ASK": 1,
+          "ASK->ALLOW": 4,
+          "ASK->BLOCK": 4,
+          "ALLOW->BLOCK": 1,
+          "ASK->ASK": 1,
+          "BLOCK->ALLOW": 3
+        }
+      },
+      "latency_s": {
+        "p50": 0.247,
+        "p95": 0.282,
+        "note": "Historical concurrency 4; excluded from ranking latency tie-breaks."
+      }
     }
   ],
   "training_pilots": {
