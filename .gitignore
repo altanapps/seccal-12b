@@ -12,3 +12,6 @@ models/
 data/sft/
 eval/out/
 /out/
+.venv-mlx/
+data/holdout/reviews/
+data/holdout/supplement/reviews/

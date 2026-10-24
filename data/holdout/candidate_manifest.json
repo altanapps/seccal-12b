@@ -1,0 +1,8 @@
+{
+  "version": "holdout-v1",
+  "rows": 300,
+  "scenarios": 100,
+  "candidate_sha256": "1bd42f94efbc9e9daebaf68d2202641e576763496a74903d563ede7be10522cd",
+  "status": "unreviewed candidates; not an accepted benchmark",
+  "selection_use": "none"
+}

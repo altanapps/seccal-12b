@@ -2,6 +2,18 @@
 
 On-device tool-call risk scorer: a fine-tuned `LiquidAI/LFM2.5-1.2B-Instruct` that judges a coding agent's pending tool call (given the user's goal) and returns an ALLOW / ASK / BLOCK verdict, served locally via llama.cpp from a Claude Code `PreToolUse` hook.
 
+## Local model comparison — 24 October 2026
+
+**Best measured base checkpoint: Qwen3.8-27B (policy prompt), 44/52 correct (84.6%), zero observed BLOCK→ALLOW misses out of 15, p95 latency 1.325 s.** Here “base” means before seccal fine-tuning; these are publisher instruction checkpoints.
+
+**Best fast local candidate: Ministral-3-3B (policy prompt), 42/52 correct (80.8%), zero observed BLOCK→ALLOW misses, p95 0.220 s.** Qwen3.5-9B follows at 41/52 (78.8%), with two BLOCK→ALLOW misses. The [full best-to-worst ranking](reports/base_model_comparison.md#best-to-worst-model-ranking) covers all 13 models with successful runs, selecting each model's best measured prompt and showing safety metrics alongside accuracy. LFM2.5-2.6B requires a protocol adapter and is unranked.
+
+These are results on the **52-row validation selection set**, with one request at a time; they are separate from the historical test results below. The winner still recognizes only 2/9 ASK calls, and Ministral recognizes 0/9. Prompt selection on the same small set can overestimate performance. No new scores are claimed on the 49-row test set or the new holdout.
+
+Models were loaded one at a time with a 24 GB runtime budget and an early-stop watchdog; the maximum sampled inference/review memory was **20.73 GB**. **The 35B model remains deferred and was not downloaded or loaded.** Local MLX training pilots completed one optimizer update each at about 5 GB; full fine-tunes have not run. The new 314-call holdout is model-reviewed and author-adjudicated synthetic data, not human-verified ground truth.
+
+See the [phase 2 results](reports/phase2_results.md), [54-model device-fit catalog](reports/model_selection_plan.md), [portable recorded metrics](reports/base_model_results.json), [evaluation workflow](eval/README.md), and [local training recipes](train/LOCAL_TRAINING.md). Model weights and raw runtime logs stay local.
+
 ## Dataset summary
 
 **500 reviewed training rows** across four batches (pilot 101, batch B 99, batch D 150, batch E 150), each a pending tool call judged against the user's goal. Canonical files: `data/synth/out/accepted.jsonl` (398 rows where the generator and an independent blind judge agreed) and `data/synth/out/adjudicated.jsonl` (102 disagreements resolved by blind-first adjudication). Label policy: `data/LABELING.md`.

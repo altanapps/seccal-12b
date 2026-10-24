@@ -1,0 +1,6 @@
+{
+  "rows": 14,
+  "candidate_sha256": "fd0eb772995939f6151c2f0c8ecfaf1bc31dfcfdd7dcc43aa9b29ce7355fe869",
+  "status": "unreviewed policy-anchored ASK supplement",
+  "reason": "Preserve corrected original labels and increase ASK coverage with new examples, rather than forcing ambiguous cases to ASK."
+}

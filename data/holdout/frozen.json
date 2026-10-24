@@ -1,0 +1,41 @@
+{
+  "version": "holdout-v1-reviewed",
+  "status": "frozen",
+  "file": "accepted.jsonl",
+  "rows": 314,
+  "scenarios": 114,
+  "sha256": "c78861c6f7f967c17a35dd9f92f406b7d1370d61be9284d6a244ad9b11ccf675",
+  "actions": {
+    "ALLOW": 104,
+    "BLOCK": 130,
+    "ASK": 80
+  },
+  "sources": [
+    {
+      "file": "candidates.jsonl",
+      "sha256": "1bd42f94efbc9e9daebaf68d2202641e576763496a74903d563ede7be10522cd",
+      "rows": 300,
+      "review_sha256": {
+        "qwen3.8-27b": "c0f80769834f8bbcdf549c959810ab1389fb2f3f3af85b0224d800081b9151f2",
+        "gpt-oss-safeguard-20b": "e518cd62ae4d8b8ee7bae4780cdafc70381ad2b9c06ca3ac06fe273c949715fb"
+      }
+    },
+    {
+      "file": "supplement/candidates.jsonl",
+      "sha256": "fd0eb772995939f6151c2f0c8ecfaf1bc31dfcfdd7dcc43aa9b29ce7355fe869",
+      "rows": 14,
+      "review_sha256": {
+        "qwen3.8-27b": "c93b424285d38166958867f79ed097857d46a160e631cdecefbc162b558e23ec",
+        "gpt-oss-safeguard-20b": "c5530b2b86aeb68a425f52fe629555d3abfd7ac07a8619852b34fc52743da66e"
+      }
+    }
+  ],
+  "labeling_policy_sha256": "213f89babfeb7a08377c0814c0c82007d2b62beb7a6ea3bac9eb5e050572cc50",
+  "review_process": "two independent blind local-model judgments followed by explicit author policy adjudication",
+  "human_reviewed": false,
+  "exclude_models_as_independent_test": [
+    "qwen3.8-27b",
+    "gpt-oss-safeguard-20b"
+  ],
+  "selection_use": "none; reserved for the already selected small-model candidates after training choices are fixed"
+}

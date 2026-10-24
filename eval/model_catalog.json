@@ -1,0 +1,1572 @@
+{
+  "as_of": "2026-10-24",
+  "hardware": {
+    "chip": "Apple M5 Pro",
+    "unified_memory_gb": 48,
+    "gpu_cores": 20
+  },
+  "assumptions": "Inference estimates only: one model loaded, one slot, 4096-token context, Q4 GGUF unless stated; allow 8-12 GB additional headroom for macOS and apps. Runtime estimates are planning ranges, not measurements. Local training requires a separate MLX/QLoRA implementation; existing Unsloth script is CUDA-only.",
+  "models": [
+    {
+      "id": "lfm2.5-1.2b",
+      "source_model": "LiquidAI/LFM2.5-1.2B-Instruct",
+      "source_url": "https://huggingface.co/LiquidAI/LFM2.5-1.2B-Instruct",
+      "total_parameters_b_approx": 1.17,
+      "wave": "initial",
+      "fit_48gb": "yes",
+      "estimated_runtime_gb": [
+        1.7,
+        4.7
+      ],
+      "local_qlora": "plausible; MLX port and measurement required",
+      "training_recipe": "existing CUDA preset",
+      "notes": "Existing training preset; re-establish pretrained baseline.",
+      "gguf_repo": "LiquidAI/LFM2.5-1.2B-Instruct-GGUF",
+      "gguf_revision": "8ed288026e23958ad9dfa92d53ed773a8eee7125",
+      "quantization": "Q4_K_M",
+      "artifacts": [
+        {
+          "file": "LFM2.5-1.2B-Instruct-Q4_K_M.gguf",
+          "bytes": 730895168,
+          "sha256": "b1b3de114215d9507409a662a501a631095a479a419584e8a2ded6304b19b4f5"
+        }
+      ],
+      "license": "other",
+      "thinking": "off",
+      "source_revision": "0f604ada3f766f9f257460c4c9f0b5d6f69d431b",
+      "size_basis": "published GGUF bytes plus 1-4GB runtime allowance"
+    },
+    {
+      "id": "lfm2-2.6b",
+      "source_model": "LiquidAI/LFM2-2.6B",
+      "source_url": "https://huggingface.co/LiquidAI/LFM2-2.6B",
+      "total_parameters_b_approx": 2.569,
+      "wave": "initial",
+      "fit_48gb": "yes",
+      "estimated_runtime_gb": [
+        2.6,
+        5.6
+      ],
+      "local_qlora": "plausible; MLX port and measurement required",
+      "training_recipe": "existing CUDA preset",
+      "notes": "Existing training preset; controlled architecture/size comparison.",
+      "gguf_repo": "LiquidAI/LFM2-2.6B-GGUF",
+      "gguf_revision": "a759abdc5955d4ca97763e5cb7ff3940589ba898",
+      "quantization": "Q4_K_M",
+      "artifacts": [
+        {
+          "file": "LFM2-2.6B-Q4_K_M.gguf",
+          "bytes": 1563668704,
+          "sha256": "384bc877b6c37064982f96885bef69e4475919f5969218ed4e3b9399ae0340df"
+        }
+      ],
+      "license": "other",
+      "thinking": "off",
+      "source_revision": "36ed799f7024ef169ba92ffe184821835e15cc66",
+      "size_basis": "published GGUF bytes plus 1-4GB runtime allowance"
+    },
+    {
+      "id": "lfm2.5-2.6b",
+      "source_model": "LiquidAI/LFM2.5-2.6B",
+      "source_url": "https://huggingface.co/LiquidAI/LFM2.5-2.6B",
+      "total_parameters_b_approx": 2.697,
+      "wave": "initial",
+      "fit_48gb": "yes",
+      "estimated_runtime_gb": [
+        2.7,
+        5.7
+      ],
+      "local_qlora": "plausible; MLX port and measurement required",
+      "training_recipe": "new recipe required",
+      "notes": "Newer dense Liquid checkpoint; potential fast deployment model. Memory/load smoke passes, but native no-thinking verdict protocol does not; do not rank its all-error direct run.",
+      "gguf_repo": "LiquidAI/LFM2.5-2.6B-GGUF",
+      "gguf_revision": "e7caca5d835a3901a8e0d63e94009429bafafdfc",
+      "quantization": "Q4_K_M",
+      "artifacts": [
+        {
+          "file": "LFM2.5-2.6B-Q4_K_M.gguf",
+          "bytes": 1674455040,
+          "sha256": "02a8b7e17487d326e46d68ce0ba24211e1b80a14c4cd0597fa73c1cd697f52ed"
+        }
+      ],
+      "license": "other",
+      "thinking": "off",
+      "source_revision": "b212e75975bbda9676a94d3cb7b2ca25b65fed48",
+      "size_basis": "published GGUF bytes plus 1-4GB runtime allowance",
+      "direct_eval_compatible": false,
+      "direct_eval_blocker": "Native template unconditionally opens a thinking span. Installed llama.cpp returns grammar-constrained verdict in reasoning_content with empty content even under --reasoning off; forcing a zero thinking budget also conflicts with grammar. Needs a separately validated protocol/template adapter."
+    },
+    {
+      "id": "qwen3-4b",
+      "source_model": "Qwen/Qwen3-4B-Instruct-2507",
+      "source_url": "https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507",
+      "total_parameters_b_approx": 4.022,
+      "wave": "initial",
+      "fit_48gb": "yes",
+      "estimated_runtime_gb": [
+        3.5,
+        6.5
+      ],
+      "local_qlora": "plausible; MLX port and measurement required",
+      "training_recipe": "existing CUDA preset",
+      "notes": "Existing iteration-2 training preset; direct non-thinking checkpoint.",
+      "gguf_repo": "unsloth/Qwen3-4B-Instruct-2507-GGUF",
+      "gguf_revision": "a06e946bb6b655725eafa393f4a9745d460374c9",
+      "quantization": "Q4_K_M",
+      "artifacts": [
+        {
+          "file": "Qwen3-4B-Instruct-2507-Q4_K_M.gguf",
+          "bytes": 2497281120,
+          "sha256": "3605803b982cb64aead44f6c1b2ae36e3acdb41d8e46c8a94c6533bc4c67e597"
+        }
+      ],
+      "license": "apache-2.0",
+      "thinking": "off",
+      "source_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+      "size_basis": "published GGUF bytes plus 1-4GB runtime allowance"
+    },
+    {
+      "id": "qwen3.5-4b",
+      "source_model": "Qwen/Qwen3.5-4B",
+      "source_url": "https://huggingface.co/Qwen/Qwen3.5-4B",
+      "total_parameters_b_approx": 4.66,
+      "wave": "initial",
+      "fit_48gb": "yes",
+      "estimated_runtime_gb": [
+        3.7,
+        6.7
+      ],
+      "local_qlora": "plausible; MLX port and measurement required",
+      "training_recipe": "new recipe required",
+      "notes": "Newer small hybrid model; evaluate with thinking disabled.",
+      "gguf_repo": "unsloth/Qwen3.5-4B-GGUF",
+      "gguf_revision": "e87f176479d0855a907a41277aca2f8ee7a09523",
+      "quantization": "Q4_K_M",
+      "artifacts": [
+        {
+          "file": "Qwen3.5-4B-Q4_K_M.gguf",
+          "bytes": 2740937888,
+          "sha256": "00fe7986ff5f6b463e62455821146049db6f9313603938a70800d1fb69ef11a4"
+        }
+      ],
+      "license": "apache-2.0",
+      "thinking": "off",
+      "source_revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+      "size_basis": "published GGUF bytes plus 1-4GB runtime allowance"
+    },
+    {
+      "id": "qwen3.5-9b",
+      "source_model": "Qwen/Qwen3.5-9B",
+      "source_url": "https://huggingface.co/Qwen/Qwen3.5-9B",
+      "total_parameters_b_approx": 9.653,
+      "wave": "initial",
+      "fit_48gb": "yes",
+      "estimated_runtime_gb": [
+        6.7,
+        9.7
+      ],
+      "local_qlora": "plausible; MLX port and measurement required",
+      "training_recipe": "new recipe required",
+      "notes": "Larger quality comparison; evaluate with thinking disabled.",
+      "gguf_repo": "unsloth/Qwen3.5-9B-GGUF",
+      "gguf_revision": "3885219b6810b007914f3a7950a8d1b469d598a5",
+      "quantization": "Q4_K_M",
+      "artifacts": [
+        {
+          "file": "Qwen3.5-9B-Q4_K_M.gguf",
+          "bytes": 5680522464,
+          "sha256": "03b74727a860a56338e042c4420bb3f04b2fec5734175f4cb9fa853daf52b7e8"
+        }
+      ],
+      "license": "apache-2.0",
+      "thinking": "off",
+      "source_revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+      "size_basis": "published GGUF bytes plus 1-4GB runtime allowance"
+    },
+    {
+      "id": "ministral3-3b",
+      "source_model": "mistralai/Ministral-3-3B-Instruct-2512",
+      "source_url": "https://huggingface.co/mistralai/Ministral-3-3B-Instruct-2512",
+      "total_parameters_b_approx": 3.849,
+      "wave": "initial",
+      "fit_48gb": "yes",
+      "estimated_runtime_gb": [
+        3.1,
+        6.1
+      ],
+      "local_qlora": "plausible; MLX port and measurement required",
+      "training_recipe": "new recipe required",
+      "notes": "Independent instruct family; text-only inference, no vision projector.",
+      "gguf_repo": "unsloth/Ministral-3-3B-Instruct-2512-GGUF",
+      "gguf_revision": "7564922f37fa5bbb62b87f09a55c12f1f91d7a6a",
+      "quantization": "Q4_K_M",
+      "artifacts": [
+        {
+          "file": "Ministral-3-3B-Instruct-2512-Q4_K_M.gguf",
+          "bytes": 2146497824,
+          "sha256": "fd46fc371ff0509bfa8657ac956b7de8534d7d9baaa4947975c0648c3aa397f4"
+        }
+      ],
+      "license": "apache-2.0",
+      "thinking": "off",
+      "source_revision": "b35d4dfe56c142746f54dbd64f579faab2744308",
+      "size_basis": "published GGUF bytes plus 1-4GB runtime allowance"
+    },
+    {
+      "id": "gemma4-e2b",
+      "source_model": "google/gemma-4-E2B-it",
+      "source_url": "https://huggingface.co/google/gemma-4-E2B-it",
+      "total_parameters_b_approx": 5.123,
+      "wave": "initial",
+      "fit_48gb": "yes",
+      "estimated_runtime_gb": [
+        4.1,
+        7.1
+      ],
+      "local_qlora": "plausible; MLX port and measurement required",
+      "training_recipe": "new recipe required",
+      "notes": "Efficient parameter name is not total weight count; text-only, disable thinking.",
+      "gguf_repo": "unsloth/gemma-4-E2B-it-GGUF",
+      "gguf_revision": "0314792d7f1f7e229411f620751375812bb9faf2",
+      "quantization": "Q4_K_M",
+      "artifacts": [
+        {
+          "file": "gemma-4-E2B-it-Q4_K_M.gguf",
+          "bytes": 3106738272,
+          "sha256": "740185b21d22ceb83a11c3aa62ad5842ef32c70f6096d756bbee85a1e4ec34b8"
+        }
+      ],
+      "license": "apache-2.0",
+      "thinking": "off",
+      "source_revision": "3e22461f65e89153144f8adb70e3b8c2cc9845a7",
+      "size_basis": "published GGUF bytes plus 1-4GB runtime allowance"
+    },
+    {
+      "id": "qwen3.5-0.8b",
+      "source_model": "Qwen/Qwen3.5-0.8B",
+      "source_url": "https://huggingface.co/Qwen/Qwen3.5-0.8B",
+      "wave": "followup",
+      "notes": "Smallest latency/accuracy control.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "Qwen3.5-0.8B-Q4_K_M.gguf",
+          "bytes": 532517120,
+          "sha256": "bd258782e35f7f458f8aced1adc053e6e92e89bc735ba3be89d38a06121dc517"
+        }
+      ],
+      "source_revision": "2fc06364715b967f1860aea9cf38778875588b17",
+      "license": "apache-2.0",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 0.873,
+      "gguf_repo": "unsloth/Qwen3.5-0.8B-GGUF",
+      "gguf_revision": "6ab461498e2023f6e3c1baea90a8f0fe38ab64d0",
+      "quantization": "Q4_K_M",
+      "estimated_runtime_gb": [
+        1.5,
+        5.5
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "plausible; MLX port and measurement required",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "qwen3.5-2b",
+      "source_model": "Qwen/Qwen3.5-2B",
+      "source_url": "https://huggingface.co/Qwen/Qwen3.5-2B",
+      "wave": "followup",
+      "notes": "Small newer-family deployment candidate.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "Qwen3.5-2B-Q4_K_M.gguf",
+          "bytes": 1280835840,
+          "sha256": "aaf42c8b7c3cab2bf3d69c355048d4a0ee9973d48f16c731c0520ee914699223"
+        }
+      ],
+      "source_revision": "15852e8c16360a2fea060d615a32b45270f8a8fc",
+      "license": "apache-2.0",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 2.274,
+      "gguf_repo": "unsloth/Qwen3.5-2B-GGUF",
+      "gguf_revision": "f6d5376be1edb4d416d56da11e5397a961aca8ae",
+      "quantization": "Q4_K_M",
+      "estimated_runtime_gb": [
+        2.3,
+        6.3
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "plausible; MLX port and measurement required",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "lfm2.5-8b-a1b",
+      "source_model": "LiquidAI/LFM2.5-8B-A1B",
+      "source_url": "https://huggingface.co/LiquidAI/LFM2.5-8B-A1B",
+      "wave": "followup",
+      "notes": "MoE: total weights must fit despite roughly 1.5B active parameters.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "LFM2.5-8B-A1B-Q4_K_M.gguf",
+          "bytes": 5155564768,
+          "sha256": "4923ec14f06b968b74d663e5949867d2d9c3bf13a20b8be1a9f9af39989b2bb0"
+        }
+      ],
+      "source_revision": "5dd22602c2e9f6a097b1de4c4efe0658b605015c",
+      "license": "other",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 8.468,
+      "gguf_repo": "LiquidAI/LFM2.5-8B-A1B-GGUF",
+      "gguf_revision": "49c14831707011e64d70b2ebd8462ba08d608434",
+      "quantization": "Q4_K_M",
+      "estimated_runtime_gb": [
+        6.2,
+        10.2
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "plausible; MLX port and measurement required",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "smollm3-3b",
+      "source_model": "HuggingFaceTB/SmolLM3-3B",
+      "source_url": "https://huggingface.co/HuggingFaceTB/SmolLM3-3B",
+      "wave": "followup",
+      "notes": "Independent small family; use non-thinking mode.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "SmolLM3-3B-Q4_K_M.gguf",
+          "bytes": 1915306528,
+          "sha256": "4de907d2d388a5508fb7cb443a06effe14cce3518b0a78d3bdd9e74d9edce989"
+        }
+      ],
+      "source_revision": "a07cc9a04f16550a088caea529712d1d335b0ac1",
+      "license": "apache-2.0",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 3.075,
+      "gguf_repo": "unsloth/SmolLM3-3B-GGUF",
+      "gguf_revision": "a7bc17204c8a326d6bd6e466e076959eddae2025",
+      "quantization": "Q4_K_M",
+      "estimated_runtime_gb": [
+        2.9,
+        6.9
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "plausible; MLX port and measurement required",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "phi4-mini",
+      "source_model": "microsoft/Phi-4-mini-instruct",
+      "source_url": "https://huggingface.co/microsoft/Phi-4-mini-instruct",
+      "wave": "followup",
+      "notes": "3.8B instruct alternative; different prompt template and training boundaries.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "Phi-4-mini-instruct-Q4_K_M.gguf",
+          "bytes": 2491874272,
+          "sha256": "88c00229914083cd112853aab84ed51b87bdf6b9ce42f532d8c85c7c63b1730a"
+        }
+      ],
+      "source_revision": "cfbefacb99257ffa30c83adab238a50856ac3083",
+      "license": "mit",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 3.836,
+      "gguf_repo": "unsloth/Phi-4-mini-instruct-GGUF",
+      "gguf_revision": "78eb92a46fc37e6b524df991ed9aca9bc6aa7b80",
+      "quantization": "Q4_K_M",
+      "estimated_runtime_gb": [
+        3.5,
+        7.5
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "plausible; MLX port and measurement required",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "granite4-micro",
+      "source_model": "ibm-granite/granite-4.0-micro",
+      "source_url": "https://huggingface.co/ibm-granite/granite-4.0-micro",
+      "wave": "followup",
+      "notes": "Small enterprise/tool-use instruct comparison.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "granite-4.0-micro-Q4_K_M.gguf",
+          "bytes": 2099502528,
+          "sha256": "97c417dcc0534b0737c74016fb2af083cb17c3b51eaac621192d23961b7024eb"
+        }
+      ],
+      "source_revision": "56111ae135df9c53a78c99028e7bc24035a9e979",
+      "license": "apache-2.0",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 3.403,
+      "gguf_repo": "ibm-granite/granite-4.0-micro-GGUF",
+      "gguf_revision": "ec48475f0c811d812fbfb61975717a9c36eeb652",
+      "quantization": "Q4_K_M",
+      "estimated_runtime_gb": [
+        3.1,
+        7.1
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "plausible; MLX port and measurement required",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "llama3.2-3b",
+      "source_model": "meta-llama/Llama-3.2-3B-Instruct",
+      "source_url": "https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct",
+      "wave": "followup",
+      "notes": "Older stable control; Llama license and upstream access conditions apply.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "Llama-3.2-3B-Instruct-Q4_K_M.gguf",
+          "bytes": 2019377696,
+          "sha256": "6c1a2b41161032677be168d354123594c0e6e67d2b9227c84f296ad037c728ff"
+        }
+      ],
+      "source_revision": "0cb88a4f764b7a12671c53f0838cd831a0843b95",
+      "license": "llama3.2",
+      "upstream_gated": "manual",
+      "total_parameters_b_approx": 3.213,
+      "gguf_repo": "bartowski/Llama-3.2-3B-Instruct-GGUF",
+      "gguf_revision": "5ab33fa94d1d04e903623ae72c95d1696f09f9e8",
+      "quantization": "Q4_K_M",
+      "estimated_runtime_gb": [
+        3.0,
+        7.0
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "plausible; MLX port and measurement required",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "gemma4-e4b",
+      "source_model": "google/gemma-4-E4B-it",
+      "source_url": "https://huggingface.co/google/gemma-4-E4B-it",
+      "wave": "followup",
+      "notes": "E4B is effective compute, not total stored parameter count; text-only.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "gemma-4-E4B-it-Q4_K_M.gguf",
+          "bytes": 4977171584,
+          "sha256": "85a896a047553e842f25297ee5b031d64ff30147d9c4af17b1e4b394cd1fab87"
+        }
+      ],
+      "source_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2",
+      "license": "apache-2.0",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 7.996,
+      "gguf_repo": "unsloth/gemma-4-E4B-it-GGUF",
+      "gguf_revision": "bfc15c382204943c3a8fff0c750b94ae2364d7a3",
+      "quantization": "Q4_K_M",
+      "estimated_runtime_gb": [
+        6.0,
+        10.0
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "plausible; MLX port and measurement required",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "ministral3-8b",
+      "source_model": "mistralai/Ministral-3-8B-Instruct-2512",
+      "source_url": "https://huggingface.co/mistralai/Ministral-3-8B-Instruct-2512",
+      "wave": "followup",
+      "notes": "Larger independent instruct family; omit vision projector.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "Ministral-3-8B-Instruct-2512-Q4_K_M.gguf",
+          "bytes": 5198386720,
+          "sha256": "5dbc3647eb563b9f8d3c70ec3d906cce84b86bb35c5e0b8a36e7df3937ab7174"
+        }
+      ],
+      "source_revision": "5b26027e7b19eeb4b7352e1fed3926375dd2cb4d",
+      "license": "apache-2.0",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 8.918,
+      "gguf_repo": "unsloth/Ministral-3-8B-Instruct-2512-GGUF",
+      "gguf_revision": "3731507ec3e867db16d620f73e14d689125758f4",
+      "quantization": "Q4_K_M",
+      "estimated_runtime_gb": [
+        6.2,
+        10.2
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "plausible; MLX port and measurement required",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "nemotron-nano9b-v2",
+      "source_model": "nvidia/NVIDIA-Nemotron-Nano-9B-v2",
+      "source_url": "https://huggingface.co/nvidia/NVIDIA-Nemotron-Nano-9B-v2",
+      "wave": "followup",
+      "notes": "Hybrid architecture; backend and no-thinking path need smoke validation.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "nvidia_NVIDIA-Nemotron-Nano-9B-v2-Q4_K_M.gguf",
+          "bytes": 6525629280,
+          "sha256": "be84528231457f766a35612386e2638d9af10beb10a9d8d23f0cc73c20818da7"
+        }
+      ],
+      "source_revision": "6533e8de2c68e4536bf7c411d7a3ce5734111476",
+      "license": "other",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 8.888,
+      "gguf_repo": "bartowski/nvidia_NVIDIA-Nemotron-Nano-9B-v2-GGUF",
+      "estimated_runtime_gb": [
+        7.5,
+        11.5
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "plausible; MLX port and measurement required",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance",
+      "gguf_revision": "b2daccafb3d123ea94653720a0db1f5db9c698ff",
+      "quantization": "Q4_K_M"
+    },
+    {
+      "id": "qwen3.8-27b",
+      "source_model": "Qwen/Qwen3.8-27B",
+      "source_url": "https://huggingface.co/Qwen/Qwen3.8-27B",
+      "wave": "teacher",
+      "notes": "Current dense quality reference; latency must be measured. Available artifact uses Unsloth dynamic Q4; report separately from conventional Q4_K_M.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "Qwen3.8-27B-UD-Q4_K_M.gguf",
+          "bytes": 16464440224,
+          "sha256": "322e194ff79741c7baa497c240f677f54b201b0efab44ca8e50f122b39123482"
+        }
+      ],
+      "source_revision": "1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0",
+      "license": "apache-2.0",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 27.781,
+      "gguf_repo": "unsloth/Qwen3.8-27B-GGUF",
+      "gguf_revision": "4ca720788d1e01f1bff70c033e0d0028fd02e502",
+      "quantization": "UD-Q4_K_M",
+      "estimated_runtime_gb": [
+        17.5,
+        21.5
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "remote GPU recommended; local fit not established",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "qwen3.6-35b-a3b",
+      "source_model": "Qwen/Qwen3.6-35B-A3B",
+      "source_url": "https://huggingface.co/Qwen/Qwen3.6-35B-A3B",
+      "wave": "teacher",
+      "notes": "MoE quality reference: 35B total weights, approximately 3B active compute. Pinned artifact is Unsloth dynamic Q4, not conventional Q4_K_M.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "Qwen3.6-35B-A3B-UD-Q4_K_M.gguf",
+          "bytes": 22134528992,
+          "sha256": "ac0e2c1189e055faa36eff361580e79c5bd6f8e76bffb4ce547f167d53e31a61"
+        }
+      ],
+      "source_revision": "995ad96eacd98c81ed38be0c5b274b04031597b0",
+      "license": "apache-2.0",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 35.952,
+      "gguf_repo": "unsloth/Qwen3.6-35B-A3B-GGUF",
+      "gguf_revision": "a483e9e6cbd595906af30beda3187c2663a1118c",
+      "quantization": "UD-Q4_K_M",
+      "estimated_runtime_gb": [
+        23.1,
+        27.1
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "remote GPU recommended; local fit not established",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "gpt-oss-20b",
+      "source_model": "openai/gpt-oss-20b",
+      "source_url": "https://huggingface.co/openai/gpt-oss-20b",
+      "wave": "teacher",
+      "notes": "MXFP4 MoE; Harmony/reasoning-aware adapter and output budget required before a fair run.",
+      "thinking": "on",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "gpt-oss-20b-MXFP4.gguf",
+          "bytes": 12109566624,
+          "sha256": "27cd6c432c7672cb812a92f611cf3ba7bbc35928262bb1e1253ff4ee6ae35901"
+        }
+      ],
+      "source_revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+      "license": "apache-2.0",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 20.915,
+      "gguf_repo": "ggml-org/gpt-oss-20b-GGUF",
+      "gguf_revision": "15dcfc7e7c608c6161507211ed43c5b590801b4b",
+      "quantization": "MXFP4",
+      "estimated_runtime_gb": [
+        13.1,
+        17.1
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "remote GPU recommended; local fit not established",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "gpt-oss-safeguard-20b",
+      "source_model": "openai/gpt-oss-safeguard-20b",
+      "source_url": "https://huggingface.co/openai/gpt-oss-safeguard-20b",
+      "wave": "specialist",
+      "notes": "Bring-your-own-policy safety model; separate policy/reasoning track, not a drop-in 48-token classifier.",
+      "thinking": "on",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "gpt-oss-safeguard-20b-Q4_K_M.gguf",
+          "bytes": 11624759232,
+          "sha256": "7c70a6d00294bafb0a118d4deb1697ee8cf0cef8e65dc5dedcc25cbbe4699bad"
+        }
+      ],
+      "source_revision": "8a11e17b25c973a24099d4016bf2e17dd7ec1574",
+      "license": "apache-2.0",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 21.512,
+      "gguf_repo": "unsloth/gpt-oss-safeguard-20b-GGUF",
+      "gguf_revision": "8663c2039e7dab29d93bdf6d1827c9ce882721da",
+      "estimated_runtime_gb": [
+        12.6,
+        16.6
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "remote GPU recommended; local fit not established",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance",
+      "quantization": "Q4_K_M"
+    },
+    {
+      "id": "gemma4-12b",
+      "source_model": "google/gemma-4-12B-it",
+      "source_url": "https://huggingface.co/google/gemma-4-12B-it",
+      "wave": "teacher",
+      "notes": "Mid-size dense alternative; text-only inference.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "gemma-4-12b-it-Q4_K_M.gguf",
+          "bytes": 7121861440,
+          "sha256": "0a270ec9fe6b34f4a0d33992b6135117b484ebc4766ab76b51d4ae8c457e4c42"
+        }
+      ],
+      "source_revision": "707f0a3b8a3c7ad586ed01e27eafbad8a27dd0f7",
+      "license": "apache-2.0",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 11.96,
+      "gguf_repo": "unsloth/gemma-4-12B-it-GGUF",
+      "gguf_revision": "fc034cfff751157913579611efad8462ac1be606",
+      "quantization": "Q4_K_M",
+      "estimated_runtime_gb": [
+        8.1,
+        12.1
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "borderline; short context, low-rank QLoRA and measurement required",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "gemma4-26b-a4b",
+      "source_model": "google/gemma-4-26B-A4B-it",
+      "source_url": "https://huggingface.co/google/gemma-4-26B-A4B-it",
+      "wave": "teacher",
+      "notes": "MoE: 26B total, 4B active. Full total weights must fit. Pinned artifact is Unsloth dynamic Q4, not conventional Q4_K_M.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "gemma-4-26B-A4B-it-UD-Q4_K_M.gguf",
+          "bytes": 16947541728,
+          "sha256": "f2c28b3dc4776931ac6f879e11f203dec637ea0f14267a86ec8f6165f63f293f"
+        }
+      ],
+      "source_revision": "4d7ae4984b7db7de8f8457170b3f1a419ee76d52",
+      "license": "apache-2.0",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 25.806,
+      "gguf_repo": "unsloth/gemma-4-26B-A4B-it-GGUF",
+      "gguf_revision": "c099eb48e663fd284577b04978a94ffccb261841",
+      "quantization": "UD-Q4_K_M",
+      "estimated_runtime_gb": [
+        17.9,
+        21.9
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "remote GPU recommended; local fit not established",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "gemma4-31b",
+      "source_model": "google/gemma-4-31B-it",
+      "source_url": "https://huggingface.co/google/gemma-4-31B-it",
+      "wave": "teacher",
+      "notes": "Dense quality ceiling; fits quantized, likely poor inline-hook latency relative to small models.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "gemma-4-31B-it-Q4_K_M.gguf",
+          "bytes": 18323733440,
+          "sha256": "38bd64c852c4b460434cc7162fa9bdcf242faf86502581a754cb72956bb17f84"
+        }
+      ],
+      "source_revision": "842da3794eaa0b77d5f08bae87a17459d91ff475",
+      "license": "apache-2.0",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 31.273,
+      "gguf_repo": "unsloth/gemma-4-31B-it-GGUF",
+      "gguf_revision": "c1ac76e99d5513b141e8adde7288b85c3f9c32ec",
+      "quantization": "Q4_K_M",
+      "estimated_runtime_gb": [
+        19.3,
+        23.3
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "remote GPU recommended; local fit not established",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "ministral3-14b",
+      "source_model": "mistralai/Ministral-3-14B-Instruct-2512",
+      "source_url": "https://huggingface.co/mistralai/Ministral-3-14B-Instruct-2512",
+      "wave": "teacher",
+      "notes": "Mid-size direct instruct reference.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "Ministral-3-14B-Instruct-2512-Q4_K_M.gguf",
+          "bytes": 8239067840,
+          "sha256": "76ce697c065f2e40f1e8e958118b02cab38e2c10a6015f7d7908036a292dc8c8"
+        }
+      ],
+      "source_revision": "29439f81c2be264d8d393273f99e7db9c0961120",
+      "license": "apache-2.0",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 13.945,
+      "gguf_repo": "unsloth/Ministral-3-14B-Instruct-2512-GGUF",
+      "gguf_revision": "9b948841b705cc11285ff274b84ba6c885908b19",
+      "quantization": "Q4_K_M",
+      "estimated_runtime_gb": [
+        9.2,
+        13.2
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "borderline; short context, low-rank QLoRA and measurement required",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "lfm2-24b-a2b",
+      "source_model": "LiquidAI/LFM2-24B-A2B",
+      "source_url": "https://huggingface.co/LiquidAI/LFM2-24B-A2B",
+      "wave": "teacher",
+      "notes": "Larger hybrid MoE; full resident weight footprint matters.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "LFM2-24B-A2B-Q4_K_M.gguf",
+          "bytes": 14415473952,
+          "sha256": "eb4d2d4d4e61b795726c2f526c4434ca6bc725ad7a783691b58681f025cf58f2"
+        }
+      ],
+      "source_revision": "a3bbacd91a678b97712f0e323e52f8c24ba29542",
+      "license": "other",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 23.844,
+      "gguf_repo": "LiquidAI/LFM2-24B-A2B-GGUF",
+      "gguf_revision": "6247d03b87c27c05a258feb5acdfb4d5efbf0bd8",
+      "quantization": "Q4_K_M",
+      "estimated_runtime_gb": [
+        15.4,
+        19.4
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "remote GPU recommended; local fit not established",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "granite4-h-small",
+      "source_model": "ibm-granite/granite-4.0-h-small",
+      "source_url": "https://huggingface.co/ibm-granite/granite-4.0-h-small",
+      "wave": "teacher",
+      "notes": "32B-total hybrid MoE; architecture-specific training support needs investigation.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "granite-4.0-h-small-Q4_K_M.gguf",
+          "bytes": 19476621984,
+          "sha256": "23c6019f2e6fa56eb8872ecf8d9d1e4b2ebf3c087fb5275257ea07602d2a38b6"
+        }
+      ],
+      "source_revision": "b8c0982bab7fde4eb48110f5a069527c008fab39",
+      "license": "apache-2.0",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 32.207,
+      "gguf_repo": "ibm-granite/granite-4.0-h-small-GGUF",
+      "gguf_revision": "6522095069a86fc3186b8632850e4373dd850cac",
+      "quantization": "Q4_K_M",
+      "estimated_runtime_gb": [
+        20.5,
+        24.5
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "remote GPU recommended; local fit not established",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "qwen3.5-27b",
+      "source_model": "Qwen/Qwen3.5-27B",
+      "source_url": "https://huggingface.co/Qwen/Qwen3.5-27B",
+      "wave": "optional",
+      "notes": "Prior-generation dense reference; defer if current Qwen3.8 is compatible.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "Qwen3.5-27B-Q4_K_M.gguf",
+          "bytes": 16740812704,
+          "sha256": "84b5f7f112156d63836a01a69dc3f11a6ba63b10a23b8ca7a7efaf52d5a2d806"
+        }
+      ],
+      "source_revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+      "license": "apache-2.0",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 27.781,
+      "gguf_repo": "unsloth/Qwen3.5-27B-GGUF",
+      "gguf_revision": "3221f178a6b842d04f1fb42f1c413534adcc0a6a",
+      "quantization": "Q4_K_M",
+      "estimated_runtime_gb": [
+        17.7,
+        21.7
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "remote GPU recommended; local fit not established",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "qwen3.5-35b-a3b",
+      "source_model": "Qwen/Qwen3.5-35B-A3B",
+      "source_url": "https://huggingface.co/Qwen/Qwen3.5-35B-A3B",
+      "wave": "optional",
+      "notes": "Prior MoE reference; defer if Qwen3.6 is compatible.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "Qwen3.5-35B-A3B-Q4_K_M.gguf",
+          "bytes": 22016023168,
+          "sha256": "3b46d1066bc91cc2d613e3bc22ce691dd77e6f0d33c9060690d24ce6de494375"
+        }
+      ],
+      "source_revision": "59d61f3ce65a6d9863b86d2e96597125219dc754",
+      "license": "apache-2.0",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 35.952,
+      "gguf_repo": "unsloth/Qwen3.5-35B-A3B-GGUF",
+      "gguf_revision": "bc014a17be43adabd7066b7a86075ff935c6a4e2",
+      "quantization": "Q4_K_M",
+      "estimated_runtime_gb": [
+        23.0,
+        27.0
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "remote GPU recommended; local fit not established",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "qwen3.6-27b",
+      "source_model": "Qwen/Qwen3.6-27B",
+      "source_url": "https://huggingface.co/Qwen/Qwen3.6-27B",
+      "wave": "optional",
+      "notes": "Intermediate dense reference; compare only if newer model regresses.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "Qwen3.6-27B-Q4_K_M.gguf",
+          "bytes": 16817244384,
+          "sha256": "5ed60d0af4650a854b1755bd392f9aef4872643dc25a254bc68043fa638392a0"
+        }
+      ],
+      "source_revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+      "license": "apache-2.0",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 27.781,
+      "gguf_repo": "unsloth/Qwen3.6-27B-GGUF",
+      "gguf_revision": "82d411acf4a06cfb8d9b073a5211bf410bfc29bf",
+      "quantization": "Q4_K_M",
+      "estimated_runtime_gb": [
+        17.8,
+        21.8
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "remote GPU recommended; local fit not established",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "qwen3-8b",
+      "source_model": "Qwen/Qwen3-8B",
+      "source_url": "https://huggingface.co/Qwen/Qwen3-8B",
+      "wave": "optional",
+      "notes": "Older pure-text dense control; use non-thinking mode.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "Qwen3-8B-Q4_K_M.gguf",
+          "bytes": 5027783488,
+          "sha256": "d98cdcbd03e17ce47681435b5150e34c1417f50b5c0019dd560e4882c5745785"
+        }
+      ],
+      "source_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+      "license": "apache-2.0",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 8.191,
+      "gguf_repo": "Qwen/Qwen3-8B-GGUF",
+      "gguf_revision": "7c41481f57cb95916b40956ab2f0b139b296d974",
+      "quantization": "Q4_K_M",
+      "estimated_runtime_gb": [
+        6.0,
+        10.0
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "plausible; MLX port and measurement required",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "qwen3-14b",
+      "source_model": "Qwen/Qwen3-14B",
+      "source_url": "https://huggingface.co/Qwen/Qwen3-14B",
+      "wave": "optional",
+      "notes": "Older pure-text dense control; use non-thinking mode.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "Qwen3-14B-Q4_K_M.gguf",
+          "bytes": 9001752960,
+          "sha256": "500a8806e85ee9c83f3ae08420295592451379b4f8cf2d0f41c15dffeb6b81f0"
+        }
+      ],
+      "source_revision": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+      "license": "apache-2.0",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 14.768,
+      "gguf_repo": "Qwen/Qwen3-14B-GGUF",
+      "gguf_revision": "530227a7d994db8eca5ab5ced2fb692b614357fd",
+      "quantization": "Q4_K_M",
+      "estimated_runtime_gb": [
+        10.0,
+        14.0
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "borderline; short context, low-rank QLoRA and measurement required",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "qwen3-32b",
+      "source_model": "Qwen/Qwen3-32B",
+      "source_url": "https://huggingface.co/Qwen/Qwen3-32B",
+      "wave": "optional",
+      "notes": "Older dense quality reference; Q4 fits but training should be remote.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "Qwen3-32B-Q4_K_M.gguf",
+          "bytes": 19762149024,
+          "sha256": "efd971561896866f0e910cce52761ca77b1b138090c7f15fe284676d57d1f689"
+        }
+      ],
+      "source_revision": "9216db5781bf21249d130ec9da846c4624c16137",
+      "license": "apache-2.0",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 32.762,
+      "gguf_repo": "Qwen/Qwen3-32B-GGUF",
+      "gguf_revision": "938a7432affaec9157f883a87164e2646ae17555",
+      "quantization": "Q4_K_M",
+      "estimated_runtime_gb": [
+        20.8,
+        24.8
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "remote GPU recommended; local fit not established",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "qwen3-30b-a3b",
+      "source_model": "Qwen/Qwen3-30B-A3B-Instruct-2507",
+      "source_url": "https://huggingface.co/Qwen/Qwen3-30B-A3B-Instruct-2507",
+      "wave": "optional",
+      "notes": "Non-thinking text-only MoE with mature template; useful fallback for newer hybrid MoEs.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "Qwen3-30B-A3B-Instruct-2507-Q4_K_M.gguf",
+          "bytes": 18556686752,
+          "sha256": "6c997b8af17debdfb01d890214400ccbab00db6acc0ba8da5de1cc906c4774d0"
+        }
+      ],
+      "source_revision": "0d7cf23991f47feeb3a57ecb4c9cee8ea4a17bfe",
+      "license": "apache-2.0",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 30.532,
+      "gguf_repo": "unsloth/Qwen3-30B-A3B-Instruct-2507-GGUF",
+      "gguf_revision": "eea7b2be5805a5f151f8847ede8e5f9a9284bf77",
+      "quantization": "Q4_K_M",
+      "estimated_runtime_gb": [
+        19.6,
+        23.6
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "remote GPU recommended; local fit not established",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "llama3.1-8b",
+      "source_model": "meta-llama/Llama-3.1-8B-Instruct",
+      "source_url": "https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct",
+      "wave": "optional",
+      "notes": "Established text-only instruct baseline; Llama license applies.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf",
+          "bytes": 4920739232,
+          "sha256": "7b064f5842bf9532c91456deda288a1b672397a54fa729aa665952863033557c"
+        }
+      ],
+      "source_revision": "0e9e39f249a16976918f6564b8830bc894c89659",
+      "license": "llama3.1",
+      "upstream_gated": "manual",
+      "total_parameters_b_approx": 8.03,
+      "gguf_repo": "bartowski/Meta-Llama-3.1-8B-Instruct-GGUF",
+      "gguf_revision": "bf5b95e96dac0462e2a09145ec66cae9a3f12067",
+      "quantization": "Q4_K_M",
+      "estimated_runtime_gb": [
+        5.9,
+        9.9
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "plausible; MLX port and measurement required",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "gemma3-12b",
+      "source_model": "google/gemma-3-12b-it",
+      "source_url": "https://huggingface.co/google/gemma-3-12b-it",
+      "wave": "optional",
+      "notes": "Older Gemma comparison; Gemma terms differ from Apache-licensed Gemma 4.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "gemma-3-12b-it-Q4_K_M.gguf",
+          "bytes": 7300778336,
+          "sha256": "15b8fd9d8672cd4240c178c217ca781409291f34e353d2e913b29c7602ceb3ff"
+        }
+      ],
+      "source_revision": "96b6f1eccf38110c56df3a15bffe176da04bfd80",
+      "license": "gemma",
+      "upstream_gated": "manual",
+      "total_parameters_b_approx": 12.187,
+      "gguf_repo": "unsloth/gemma-3-12b-it-GGUF",
+      "gguf_revision": "d15e4c7dc21dc55d56bf8549db57a71ad8a2a35d",
+      "quantization": "Q4_K_M",
+      "estimated_runtime_gb": [
+        8.3,
+        12.3
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "borderline; short context, low-rank QLoRA and measurement required",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "phi4-14b",
+      "source_model": "microsoft/phi-4",
+      "source_url": "https://huggingface.co/microsoft/phi-4",
+      "wave": "optional",
+      "notes": "Dense reasoning-capable instruct alternative; benchmark latency.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "phi-4-Q4_K_M.gguf",
+          "bytes": 8890306112,
+          "sha256": "01e1f25b3e6931054c6c2227b06f4969828434eebc299e8e171f55dab6814485"
+        }
+      ],
+      "source_revision": "2db69c1c3e91a05d2c64a3185acfbaf36f744e25",
+      "license": "mit",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 14.66,
+      "gguf_repo": "unsloth/phi-4-GGUF",
+      "gguf_revision": "5110b7771e8166d5530e73346a15aea096a8cb99",
+      "quantization": "Q4_K_M",
+      "estimated_runtime_gb": [
+        9.9,
+        13.9
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "borderline; short context, low-rank QLoRA and measurement required",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "deepseek-r1-qwen14b",
+      "source_model": "deepseek-ai/DeepSeek-R1-Distill-Qwen-14B",
+      "source_url": "https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B",
+      "wave": "optional",
+      "notes": "Reasoning-first; poor match for current no-thinking grammar. Separate reasoning track needed.",
+      "thinking": "on",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "DeepSeek-R1-Distill-Qwen-14B-Q4_K_M.gguf",
+          "bytes": 8988109984,
+          "sha256": "67a7933cf2ad596a393c8e13b30bc4da2d50b283e250b78554aed18817eca31c"
+        }
+      ],
+      "source_revision": "1df8507178afcc1bef68cd8c393f61a886323761",
+      "license": "mit",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 14.77,
+      "gguf_repo": "unsloth/DeepSeek-R1-Distill-Qwen-14B-GGUF",
+      "gguf_revision": "7b05b58b41f623e66fc74cd27b35475267b2f3e3",
+      "quantization": "Q4_K_M",
+      "estimated_runtime_gb": [
+        10.0,
+        14.0
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "borderline; short context, low-rank QLoRA and measurement required",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "nemotron3-nano30b",
+      "source_model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16",
+      "source_url": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16",
+      "wave": "teacher",
+      "notes": "Hybrid MoE alternative; validate installed backend and thinking controls.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "Nemotron-3-Nano-30B-A3B-Q4_K_M.gguf",
+          "bytes": 24574373664,
+          "sha256": "0e7f6e51fdd9039928749d07eed9e846dbfd97681646544c5406bcdd788e5940"
+        }
+      ],
+      "source_revision": "bf77c3174f68ad409e1c2aa60daeb46e32d1c606",
+      "license": "other",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 31.578,
+      "gguf_repo": "unsloth/Nemotron-3-Nano-30B-A3B-GGUF",
+      "gguf_revision": "9ad8b366c308f931b2a96b9306f0b41aef9cd405",
+      "quantization": "Q4_K_M",
+      "estimated_runtime_gb": [
+        25.6,
+        29.6
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "remote GPU recommended; local fit not established",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "llama3.3-70b",
+      "source_model": "meta-llama/Llama-3.3-70B-Instruct",
+      "source_url": "https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct",
+      "wave": "excluded",
+      "notes": "Q4 weights alone consume most of 48GB; no useful macOS/app headroom. Q2/Q3 is a separate compromised experiment.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "Llama-3.3-70B-Instruct-Q4_K_M.gguf",
+          "bytes": 42520398816,
+          "sha256": "32df3baccb556f9840059b2528b2dee4d3d516b24afdfb9d0c56ff5f63e3a664"
+        }
+      ],
+      "source_revision": "6f6073b423013f6a7d4d9f39144961bfbfbc386b",
+      "license": "llama3.3",
+      "upstream_gated": "manual",
+      "total_parameters_b_approx": 70.554,
+      "gguf_repo": "bartowski/Llama-3.3-70B-Instruct-GGUF",
+      "gguf_revision": "b6c5c9f176f3279204034e1d16d393105e95cb88",
+      "quantization": "Q4_K_M",
+      "estimated_runtime_gb": [
+        43.5,
+        47.5
+      ],
+      "fit_48gb": "no",
+      "local_qlora": "remote GPU recommended; local fit not established",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "qwen3-next80b",
+      "source_model": "Qwen/Qwen3-Next-80B-A3B-Instruct",
+      "source_url": "https://huggingface.co/Qwen/Qwen3-Next-80B-A3B-Instruct",
+      "wave": "excluded",
+      "notes": "80B total weights, despite only 3B active; not a practical 48GB Q4 deployment.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "Qwen3-Next-80B-A3B-Instruct-Q4_K_M.gguf",
+          "bytes": 48506100512,
+          "sha256": "f73551b55e3796526c37772c96227151fa11af328802b8f9865d635104e280fd"
+        }
+      ],
+      "source_revision": "9c7f2fbe84465e40164a94cc16cd30b6999b0cc7",
+      "license": "apache-2.0",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 81.325,
+      "gguf_repo": "unsloth/Qwen3-Next-80B-A3B-Instruct-GGUF",
+      "gguf_revision": "6688872b7a4e5eb8a121ceea08009530a024ba1d",
+      "quantization": "Q4_K_M",
+      "estimated_runtime_gb": [
+        49.5,
+        53.5
+      ],
+      "fit_48gb": "no",
+      "local_qlora": "remote GPU recommended; local fit not established",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "qwen3-codernext80b",
+      "source_model": "Qwen/Qwen3-Coder-Next",
+      "source_url": "https://huggingface.co/Qwen/Qwen3-Coder-Next",
+      "wave": "excluded",
+      "notes": "80B-total coder MoE; memory fit is determined by total weights, not active parameters.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "Qwen3-Coder-Next-Q4_K_M.gguf",
+          "bytes": 48528320544,
+          "sha256": "9e6032d2f3b50a60f17ce8bf5a1d85c71af9b53b89c7978020ae7c660f29b090"
+        }
+      ],
+      "source_revision": "a7fbcb5c0e12d62a448eaa0e260346bf5dcc0feb",
+      "license": "apache-2.0",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 79.674,
+      "gguf_repo": "unsloth/Qwen3-Coder-Next-GGUF",
+      "gguf_revision": "ce09c67b53bc8739eef83fe67b2f5d293c270632",
+      "quantization": "Q4_K_M",
+      "estimated_runtime_gb": [
+        49.5,
+        53.5
+      ],
+      "fit_48gb": "no",
+      "local_qlora": "remote GPU recommended; local fit not established",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "gpt-oss-120b",
+      "source_model": "openai/gpt-oss-120b",
+      "source_url": "https://huggingface.co/openai/gpt-oss-120b",
+      "wave": "excluded",
+      "notes": "MXFP4 weights exceed the practical memory envelope; do not download for this device.",
+      "thinking": "on",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "gpt-oss-120b-MXFP4.gguf",
+          "bytes": 63387346208,
+          "sha256": "582bd40f6886200101f4c4ed9f25f3fe80cc14c86e9e2b37746cd8904a0c622d"
+        }
+      ],
+      "source_revision": "b5c939de8f754692c1647ca79fbf85e8c1e70f8a",
+      "license": "apache-2.0",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 116.829,
+      "gguf_repo": "ggml-org/gpt-oss-120b-GGUF",
+      "gguf_revision": "7200b74bea78b0a2964ef9f3897eefa401e890ff",
+      "quantization": "MXFP4",
+      "estimated_runtime_gb": [
+        64.4,
+        68.4
+      ],
+      "fit_48gb": "no",
+      "local_qlora": "remote GPU recommended; local fit not established",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "qwen3.5-122b-a10b",
+      "source_model": "Qwen/Qwen3.5-122B-A10B",
+      "source_url": "https://huggingface.co/Qwen/Qwen3.5-122B-A10B",
+      "wave": "excluded",
+      "notes": "122B total model exceeds practical 48GB memory at useful Q4 precision.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [
+        {
+          "file": "Q4_K_M/Qwen3.5-122B-A10B-Q4_K_M-00001-of-00003.gguf",
+          "bytes": 10943552,
+          "sha256": "467c9bd92ea518539cf75bf5a5fbfbd35e9a0b40d766ccaa67bf120e12041df3"
+        },
+        {
+          "file": "Q4_K_M/Qwen3.5-122B-A10B-Q4_K_M-00002-of-00003.gguf",
+          "bytes": 49968146912,
+          "sha256": "90db14846413aebdac365b57206441437cac5f7e5037d94b325f0167f902e6e7"
+        },
+        {
+          "file": "Q4_K_M/Qwen3.5-122B-A10B-Q4_K_M-00003-of-00003.gguf",
+          "bytes": 26557874144,
+          "sha256": "e3c24b8ebec070bb4f69ea0aca25a16531da7440cd515529953e046882901f97"
+        }
+      ],
+      "source_revision": "dc4d348443bc740c68e2d77492492c11606384d5",
+      "license": "apache-2.0",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 125.086,
+      "gguf_repo": "unsloth/Qwen3.5-122B-A10B-GGUF",
+      "gguf_revision": "51eab4d59d53f573fb9206cb3ce613f1d0aa392b",
+      "quantization": "Q4_K_M",
+      "estimated_runtime_gb": [
+        77.5,
+        81.5
+      ],
+      "fit_48gb": "no",
+      "local_qlora": "remote GPU recommended; local fit not established",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance"
+    },
+    {
+      "id": "deepseek-v3.2",
+      "source_model": "deepseek-ai/DeepSeek-V3.2",
+      "source_url": "https://huggingface.co/deepseek-ai/DeepSeek-V3.2",
+      "wave": "excluded",
+      "notes": "Hundreds of billions of total weights; not a local 48GB candidate.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [],
+      "source_revision": "a7e62ac04ecb2c0a54d736dc46601c5606cf10a6",
+      "license": "mit",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 685.355,
+      "estimated_runtime_gb": [
+        425.9,
+        429.9
+      ],
+      "fit_48gb": "no",
+      "local_qlora": "remote GPU recommended; local fit not established",
+      "size_basis": "rough parameter-based estimate; no verified GGUF"
+    },
+    {
+      "id": "qwen3.8-flashnext",
+      "source_model": "Qwen/Qwen3.8-Flash-Next",
+      "source_url": "https://huggingface.co/Qwen/Qwen3.8-Flash-Next",
+      "wave": "excluded",
+      "notes": "176B-total MoE; low active count does not make the stored weights fit.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [],
+      "source_revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540",
+      "license": "other",
+      "upstream_gated": false,
+      "total_parameters_b_approx": 180.0,
+      "estimated_runtime_gb": [
+        112.6,
+        116.6
+      ],
+      "fit_48gb": "no",
+      "local_qlora": "remote GPU recommended; local fit not established",
+      "size_basis": "rough parameter-based estimate; no verified GGUF"
+    },
+    {
+      "id": "prompt-guard2-86m",
+      "source_model": "meta-llama/Llama-Prompt-Guard-2-86M",
+      "source_url": "https://huggingface.co/meta-llama/Llama-Prompt-Guard-2-86M",
+      "wave": "specialist",
+      "notes": "Encoder for prompt injection detection, not goal-conditioned three-way tool authorization. Needs separate Transformers/ONNX evaluator. Publisher size names omit some embedding parameters; Hugging Face metadata counts total stored parameters.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [],
+      "source_revision": "a8ded8e697ce7c355e395a0df51f94adb4a2fd27",
+      "license": "other",
+      "upstream_gated": "manual",
+      "total_parameters_b_approx": 0.279,
+      "estimated_runtime_gb": [
+        1.2,
+        2.5
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "different encoder fine-tuning workflow; small enough in principle",
+      "size_basis": "publisher F32 stored-parameter metadata plus encoder runtime allowance; no GGUF"
+    },
+    {
+      "id": "prompt-guard2-22m",
+      "source_model": "meta-llama/Llama-Prompt-Guard-2-22M",
+      "source_url": "https://huggingface.co/meta-llama/Llama-Prompt-Guard-2-22M",
+      "wave": "specialist",
+      "notes": "Tiny injection encoder; complementary feature rather than a replacement for this classifier. Publisher size names omit some embedding parameters; Hugging Face metadata counts total stored parameters.",
+      "thinking": "off",
+      "training_recipe": "new architecture/template recipe required",
+      "artifacts": [],
+      "source_revision": "11614a155199674a0a95e6602d6ab0417b790ed0",
+      "license": "other",
+      "upstream_gated": "manual",
+      "total_parameters_b_approx": 0.071,
+      "estimated_runtime_gb": [
+        0.4,
+        1.5
+      ],
+      "fit_48gb": "yes",
+      "local_qlora": "different encoder fine-tuning workflow; small enough in principle",
+      "size_basis": "publisher F32 stored-parameter metadata plus encoder runtime allowance; no GGUF"
+    },
+    {
+      "id": "granite-guardian4.1-8b",
+      "source_model": "ibm-granite/granite-guardian-4.1-8b",
+      "source_url": "https://huggingface.co/ibm-granite/granite-guardian-4.1-8b",
+      "source_revision": "ab01ccca5dcfb80246369a086a4a87a29198f5af",
+      "total_parameters_b_approx": 8.381,
+      "wave": "specialist",
+      "fit_48gb": "yes",
+      "estimated_runtime_gb": [
+        6.0,
+        10.0
+      ],
+      "local_qlora": "new MPS/MLX training workflow and measurement required",
+      "training_recipe": "new recipe and label-schema adapter required",
+      "notes": "Bring-your-own-criteria judge; separate policy adapter and calibration required.",
+      "license": "apache-2.0",
+      "upstream_gated": false,
+      "artifacts": [],
+      "thinking": "off",
+      "size_basis": "rough parameter-based estimate; no verified GGUF"
+    },
+    {
+      "id": "qwen3guard-4b",
+      "source_model": "Qwen/Qwen3Guard-Gen-4B",
+      "source_url": "https://huggingface.co/Qwen/Qwen3Guard-Gen-4B",
+      "source_revision": "6ec42827da0c1ff11e7a49dc269d2e810d27e108",
+      "total_parameters_b_approx": 4.411,
+      "wave": "specialist",
+      "fit_48gb": "yes",
+      "estimated_runtime_gb": [
+        3.7,
+        7.7
+      ],
+      "local_qlora": "new MPS/MLX training workflow and measurement required",
+      "training_recipe": "new recipe and label-schema adapter required",
+      "notes": "Content safety taxonomy differs from tool authorization; separate native-schema evaluation required.",
+      "license": "apache-2.0",
+      "upstream_gated": false,
+      "artifacts": [
+        {
+          "file": "Qwen3Guard-Gen-4B.Q4_K_M.gguf",
+          "bytes": 2716068928,
+          "sha256": "c81d88da8e1f90a80d1b892a29fb3deac592fc5f321b35fc964a568398c1dbfb"
+        }
+      ],
+      "thinking": "off",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance",
+      "gguf_repo": "mradermacher/Qwen3Guard-Gen-4B-GGUF",
+      "gguf_revision": "b3b010b37c75197c5e887fa7dce9ff907d0be6ff",
+      "quantization": "Q4_K_M"
+    },
+    {
+      "id": "llama-guard3-8b",
+      "source_model": "meta-llama/Llama-Guard-3-8B",
+      "source_url": "https://huggingface.co/meta-llama/Llama-Guard-3-8B",
+      "source_revision": "7327bd9f6efbbe6101dc6cc4736302b3cbb6e425",
+      "total_parameters_b_approx": 8.03,
+      "wave": "specialist",
+      "fit_48gb": "yes",
+      "estimated_runtime_gb": [
+        5.9,
+        9.9
+      ],
+      "local_qlora": "new MPS/MLX training workflow and measurement required",
+      "training_recipe": "new recipe and label-schema adapter required",
+      "notes": "Content safety guard; not a drop-in ALLOW/ASK/BLOCK tool risk judge.",
+      "license": "llama3.1",
+      "upstream_gated": "manual",
+      "artifacts": [
+        {
+          "file": "Llama-Guard-3-8B.Q4_K_M.gguf",
+          "bytes": 4920735552,
+          "sha256": "c5ea8760a1e544eea66a8915fcc3fbd2c67357ea2ee6871a9e6a6c33b64d4981"
+        }
+      ],
+      "thinking": "off",
+      "size_basis": "published GGUF bytes plus 1-5GB runtime allowance",
+      "gguf_repo": "QuantFactory/Llama-Guard-3-8B-GGUF",
+      "gguf_revision": "c38e65dc78eb36a5ab2f083d021951cae8262fee",
+      "quantization": "Q4_K_M"
+    },
+    {
+      "id": "modernbert-base",
+      "source_model": "answerdotai/ModernBERT-base",
+      "source_url": "https://huggingface.co/answerdotai/ModernBERT-base",
+      "source_revision": "8949b909ec900327062f0ebf497f51aef5e6f0c8",
+      "total_parameters_b_approx": 0.15,
+      "wave": "specialist",
+      "fit_48gb": "yes",
+      "estimated_runtime_gb": [
+        0.5,
+        2.0
+      ],
+      "local_qlora": "new MPS/MLX training workflow and measurement required",
+      "training_recipe": "new recipe and label-schema adapter required",
+      "notes": "Encoder alternative: train a three-class head on goal plus serialized call. No zero-shot chat baseline. Requires separate MPS/Transformers workflow and truncation checks.",
+      "license": "apache-2.0",
+      "upstream_gated": false,
+      "artifacts": [],
+      "thinking": "off",
+      "size_basis": "rough parameter-based estimate; no verified GGUF"
+    },
+    {
+      "id": "modernbert-large",
+      "source_model": "answerdotai/ModernBERT-large",
+      "source_url": "https://huggingface.co/answerdotai/ModernBERT-large",
+      "source_revision": "45bb4654a4d5aaff24dd11d4781fa46d39bf8c13",
+      "total_parameters_b_approx": 0.396,
+      "wave": "specialist",
+      "fit_48gb": "yes",
+      "estimated_runtime_gb": [
+        1.0,
+        3.0
+      ],
+      "local_qlora": "new MPS/MLX training workflow and measurement required",
+      "training_recipe": "new recipe and label-schema adapter required",
+      "notes": "Larger encoder alternative; classification fine-tuning rather than generative SFT. MPS operator compatibility must be checked.",
+      "license": "apache-2.0",
+      "upstream_gated": false,
+      "artifacts": [],
+      "thinking": "off",
+      "size_basis": "rough parameter-based estimate; no verified GGUF"
+    }
+  ]
+}
