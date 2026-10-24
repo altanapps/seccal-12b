@@ -2,6 +2,8 @@
 
 Approved scope: six further GGUF checkpoints (39.75 GB), loaded strictly one at a time, with a 24 GB model/runtime budget while the user works. Qwen3.6-35B-A3B is deferred: it was not downloaded or loaded.
 
+Subsequent phase: [full Ministral local fine-tuning](ministral_finetune.md) has now completed. The preparation and pilot descriptions below record the earlier phase; the training report documents the recipe audit, preserved initial trial and conservative follow-up.
+
 The runner uses a process lock, confirms each server exits, checks estimated memory before loading, and samples process RSS plus macOS physical footprint every 0.1 seconds. An early-stop threshold at 22 GB leaves a 2 GB allocation margin. This watchdog is not a kernel-enforced physical-memory quota. Larger references use batch size 256 and microbatch 128 to bound workspace; exact commands are saved.
 
 ## Best-to-worst model ranking

@@ -194,8 +194,8 @@
         3.1,
         6.1
       ],
-      "local_qlora": "plausible; MLX port and measurement required",
-      "training_recipe": "new recipe required",
+      "local_qlora": "measured: two full MLX 4-bit QLoRA runs completed locally within the 24 GB cap",
+      "training_recipe": "train/recipes/ministral3-3b-policy-conservative.json",
       "notes": "Independent instruct family; text-only inference, no vision projector.",
       "gguf_repo": "unsloth/Ministral-3-3B-Instruct-2512-GGUF",
       "gguf_revision": "7564922f37fa5bbb62b87f09a55c12f1f91d7a6a",
@@ -210,7 +210,9 @@
       "license": "apache-2.0",
       "thinking": "off",
       "source_revision": "b35d4dfe56c142746f54dbd64f579faab2744308",
-      "size_basis": "published GGUF bytes plus 1-4GB runtime allowance"
+      "size_basis": "published GGUF bytes plus 1-4GB runtime allowance",
+      "local_training_report": "reports/ministral_finetune.md",
+      "local_training_peak_sampled_gb": 5.337336952
     },
     {
       "id": "gemma4-e2b",

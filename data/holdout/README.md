@@ -9,8 +9,17 @@ method. The original 300 hypotheses below remain unchanged, and a separate
 Both local judges reviewed every call blindly; final disagreements were
 adjudicated by the author against the policy, with per-row decisions in
 `adjudications.jsonl`. This is **model-reviewed, author-adjudicated synthetic
-data, not human-verified ground truth**. No small-model scores on this new set
-have been used for model selection or training.
+data, not human-verified ground truth**. Training settings and checkpoint
+choices were fixed before the first small-model holdout evaluation.
+
+The first post-training comparison is now recorded in the
+[Ministral fine-tuning report](../../reports/ministral_finetune.md): its matched
+MLX base scored 221/314 and the validation-selected adapter scored 211/314.
+The recipe and checkpoint were fixed before either holdout evaluation. The
+adapter was not promoted. These outcomes are now observed; do not use them to
+tune prompts, training settings or checkpoint choice. Further development
+informed by these results needs a fresh independent final benchmark. The frozen
+manifest, labels, review provenance and earlier candidates remain unchanged.
 
 `candidates.jsonl` contains **300 candidate calls in 100 scenario groups**:
 100 proposed ALLOW, 100 ASK and 100 BLOCK. It is newly authored synthetic data,

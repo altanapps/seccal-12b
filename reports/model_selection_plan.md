@@ -1,6 +1,6 @@
 # Model selection and evaluation plan — 24 October 2026
 
-Use this 48 GB Apple M5 Pro to compare small deployment models against a few larger local quality references before spending time on post-training. The initial eight-checkpoint download is complete: 20.14 GB. Seven checkpoints support the current direct verdict protocol; one needs an adapter. The approved working-time selection is six additional checkpoints, 39.75 GB, with the 35B checkpoint deferred to a separate run. All inference stays local; no training has been started.
+Use this 48 GB Apple M5 Pro to compare small deployment models against a few larger local quality references before spending time on post-training. The initial eight-checkpoint download is complete: 20.14 GB. Seven checkpoints support the current direct verdict protocol; one needs an adapter. The approved working-time selection is six additional checkpoints, 39.75 GB, with the 35B checkpoint deferred to a separate run. All inference stays local. Subsequent Ministral-3-3B QLoRA training completed locally at a maximum sampled 5.34 GB, under the 24 GB working cap; see the [training report](ministral_finetune.md). The original selection recommendations below are retained for context.
 
 ## Approved next phase (35B deferred while the user works)
 
@@ -45,7 +45,7 @@ For local post-training, **plausible** means small enough to investigate short-c
 | [Qwen/Qwen3-4B-Instruct-2507](https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507) | 4.022 | 2.50 / Q4_K_M | 3.5–6.5 | Yes | Plausible; new MLX recipe |
 | [Qwen/Qwen3.5-4B](https://huggingface.co/Qwen/Qwen3.5-4B) | 4.660 | 2.74 / Q4_K_M | 3.7–6.7 | Yes | Plausible; new MLX recipe |
 | [Qwen/Qwen3.5-9B](https://huggingface.co/Qwen/Qwen3.5-9B) | 9.653 | 5.68 / Q4_K_M | 6.7–9.7 | Yes | Plausible; new MLX recipe |
-| [mistralai/Ministral-3-3B-Instruct-2512](https://huggingface.co/mistralai/Ministral-3-3B-Instruct-2512) | 3.849 | 2.15 / Q4_K_M | 3.1–6.1 | Yes | Plausible; new MLX recipe |
+| [mistralai/Ministral-3-3B-Instruct-2512](https://huggingface.co/mistralai/Ministral-3-3B-Instruct-2512) | 3.849 | 2.15 / Q4_K_M | 3.1–6.1 | Yes | [Measured MLX QLoRA: 5.34 GB peak](ministral_finetune.md) |
 | [google/gemma-4-E2B-it](https://huggingface.co/google/gemma-4-E2B-it) | 5.123 | 3.11 / Q4_K_M | 4.1–7.1 | Yes | Plausible; new MLX recipe |
 
 LFM2.5-2.6B fits and loads on Metal, but its publisher template unconditionally opens a thinking span. On this installed llama.cpp the grammar-constrained verdict appears in `reasoning_content` with empty final `content`, despite `--reasoning off`. A zero thinking budget conflicts with the grammar. The 52 direct-protocol errors are retained for diagnosis; this is an integration blocker, not a score of the model's classification ability. The other seven initial checkpoints work with the direct protocol.

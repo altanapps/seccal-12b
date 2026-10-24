@@ -1,0 +1,33 @@
+{
+  "model": "models/train/ministral3-3b",
+  "data": "data/sft/mlx-policy",
+  "train": true,
+  "fine_tune_type": "lora",
+  "optimizer": "adam",
+  "mask_prompt": true,
+  "num_layers": -1,
+  "batch_size": 1,
+  "iters": 400,
+  "grad_accumulation_steps": 8,
+  "learning_rate": 0.00002,
+  "lr_schedule": {
+    "name": "cosine_decay",
+    "arguments": [0.00002, 45, 0.000002],
+    "warmup": 5,
+    "warmup_init": 0.0
+  },
+  "max_seq_length": 2048,
+  "grad_checkpoint": true,
+  "seed": 3407,
+  "steps_per_report": 40,
+  "steps_per_eval": 200,
+  "val_batches": -1,
+  "save_every": 200,
+  "adapter_path": "out/mlx-ministral3-3b-policy-conservative",
+  "lora_parameters": {
+    "rank": 8,
+    "scale": 1.0,
+    "dropout": 0.0,
+    "keys": ["self_attn.q_proj", "self_attn.v_proj"]
+  }
+}

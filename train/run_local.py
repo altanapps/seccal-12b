@@ -77,6 +77,8 @@ def main():
     ap.add_argument("--model",choices=["qwen3-4b","ministral3-3b"],required=True)
     ap.add_argument("--pilot",action="store_true")
     ap.add_argument("--check-only",action="store_true")
+    ap.add_argument("--output-dir",type=Path,help="new run directory; existing run outputs are never overwritten")
+    ap.add_argument("--recipe",type=Path,help="explicit experimental recipe; default is the model's policy recipe")
     ap.add_argument("--worker",type=Path,help=argparse.SUPPRESS)
     args=ap.parse_args()
     os.chdir(ROOT)
@@ -94,7 +96,7 @@ def main():
         sys.argv=["mlx_lm.lora","--config",str(args.worker)]
         lora.main()
         return 0
-    recipe=ROOT / "train/recipes" / f"{args.model}-policy.json"
+    recipe=args.recipe.resolve() if args.recipe else ROOT / "train/recipes" / f"{args.model}-policy.json"
     config=json.loads(recipe.read_text())
     evidence=preflight(config)
     print(json.dumps(evidence,indent=2),flush=True)
@@ -102,12 +104,17 @@ def main():
     if args.pilot:
         config.update(iters=8,steps_per_report=1,steps_per_eval=8,val_batches=2,save_every=8)
         config["adapter_path"] += "-pilot"
+    if args.output_dir:
+        config["adapter_path"] = str(args.output_dir)
     output=ROOT / config["adapter_path"]
+    if output.exists() and any(output.iterdir()):
+        raise FileExistsError(f"preserving existing run at {output}; choose a new --output-dir")
     output.mkdir(parents=True,exist_ok=True)
     effective=output / "run-config.json"
     effective.write_text(json.dumps(config,indent=2)+"\n")
     evidence.update({"pilot":args.pilot,"effective_config_sha256":hashlib.sha256(effective.read_bytes()).hexdigest(),
-        "max_runtime_gb":24,"memory_abort_threshold_gb":22,"mlx_allocator_guideline_gb":20})
+        "max_runtime_gb":24,"memory_abort_threshold_gb":22,"mlx_allocator_guideline_gb":20,
+        "microbatches":config["iters"],"optimizer_updates":config["iters"]//config["grad_accumulation_steps"]})
     process_memory(os.getpid())
     stop,sample=threading.Event(),{}
     with sweep_lock(), (output / "train.log").open("w") as log:

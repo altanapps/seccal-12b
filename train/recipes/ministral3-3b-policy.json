@@ -7,20 +7,20 @@
   "mask_prompt": true,
   "num_layers": -1,
   "batch_size": 1,
-  "iters": 150,
+  "iters": 1200,
   "grad_accumulation_steps": 8,
   "learning_rate": 0.0002,
   "max_seq_length": 2048,
   "grad_checkpoint": true,
   "seed": 3407,
-  "steps_per_report": 5,
-  "steps_per_eval": 50,
+  "steps_per_report": 40,
+  "steps_per_eval": 400,
   "val_batches": -1,
-  "save_every": 50,
+  "save_every": 400,
   "adapter_path": "out/mlx-ministral3-3b-policy",
   "lora_parameters": {
     "rank": 16,
-    "scale": 16.0,
+    "scale": 1.0,
     "dropout": 0.0
   }
 }

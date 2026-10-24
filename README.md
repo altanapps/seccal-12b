@@ -6,7 +6,7 @@ On-device tool-call risk scorer: a fine-tuned `LiquidAI/LFM2.5-1.2B-Instruct` th
 
 **Best measured base checkpoint: Qwen3.8-27B (policy prompt), 44/52 correct (84.6%), zero observed BLOCK→ALLOW misses out of 15, p95 latency 1.325 s.** Here “base” means before seccal fine-tuning; these are publisher instruction checkpoints.
 
-**Best fast local candidate: Ministral-3-3B (policy prompt), 42/52 correct (80.8%), zero observed BLOCK→ALLOW misses, p95 0.220 s.** The ranking below includes 13 base checkpoints and both quantizations of the previous seccal fine-tune, all on the same validation set. Here base checkpoints have no seccal training; the fine-tuned entries are the iteration-1 LoRA exports. LFM2.5-2.6B requires a protocol adapter and is unranked.
+**Best fast GGUF base candidate: Ministral-3-3B (policy prompt), 42/52 correct (80.8%), zero observed BLOCK→ALLOW misses, p95 0.220 s.** The GGUF ranking below includes 13 base checkpoints and both quantizations of the previous seccal fine-tune, all on the same validation set. Here base checkpoints have no seccal training; the fine-tuned entries are the iteration-1 LoRA exports. LFM2.5-2.6B requires a protocol adapter and is unranked. The subsequent Ministral MLX fine-tune has a separate matched comparison below.
 
 ### Best-to-worst ranking — same 52 validation rows
 
@@ -36,7 +36,7 @@ Ranked by action accuracy, then fewer BLOCK→ALLOW misses, higher BLOCK recall,
 
 BLOCK→ALLOW counts dangerous misses; BLOCK and ASK columns count correct predictions within each gold class. Historical fine-tune latency is marked **n/a (legacy c=4)** because those runs used concurrency 4, while the new base runs used concurrency 1. The old p95 values (Q4: 0.277 s, Q8: 0.282 s) remain in their linked reports but are excluded from speed comparisons and latency tie-breaks. Safeguard has a larger reasoning budget than the direct classifiers. The [detailed comparison](reports/base_model_comparison.md) includes all prompt variants and safety metrics.
 
-These are results on the **52-row validation selection set** (28 ALLOW, nine ASK, 15 BLOCK; ten contrast pairs), separate from the historical 49-row test results below. The winner recognizes only 2/9 ASK calls, and Ministral recognizes 0/9. Prompt selection on the same small set can overestimate performance. No new scores are claimed on the 49-row test set or the new holdout.
+These are results on the **52-row validation selection set** (28 ALLOW, nine ASK, 15 BLOCK; ten contrast pairs), separate from the historical 49-row test results below. The winner recognizes only 2/9 ASK calls, and Ministral recognizes 0/9. Prompt selection on the same small set can overestimate performance. This GGUF sweep did not score the test or new holdout; the later MLX comparison below scores the holdout after checkpoint selection. The historical 49-row test remains untouched in this phase.
 
 To regenerate this table and the reports from the committed metrics, without downloading or loading a model:
 
@@ -47,9 +47,36 @@ python3 eval/report_phase2.py
 
 To import any newer local evaluation results first, run `python3 eval/rank_models.py`. The recorded snapshot includes both historical fine-tunes, so a fresh checkout can reproduce the ranking without the gitignored prediction files.
 
-Models were loaded one at a time with a 24 GB runtime budget and an early-stop watchdog; the maximum sampled inference/review memory was **20.73 GB**. **The 35B model remains deferred and was not downloaded or loaded.** Local MLX training pilots completed one optimizer update each at about 5 GB; full fine-tunes have not run. The new 314-call holdout is model-reviewed and author-adjudicated synthetic data, not human-verified ground truth.
+Models were loaded one at a time with a 24 GB runtime budget and an early-stop watchdog; the maximum sampled inference/review memory was **20.73 GB**. **The 35B model remains deferred and was not downloaded or loaded.** Two full Ministral MLX QLoRA runs have now completed, with a maximum sampled training footprint of **5.34 GB**. The 314-call holdout is model-reviewed and author-adjudicated synthetic data, not human-verified ground truth.
 
 See the [phase 2 results](reports/phase2_results.md), [54-model device-fit catalog](reports/model_selection_plan.md), [portable recorded metrics](reports/base_model_results.json), [evaluation workflow](eval/README.md), and [local training recipes](train/LOCAL_TRAINING.md). Model weights and raw runtime logs stay local.
+
+## Ministral local fine-tune — completed, not promoted
+
+**Keep the base checkpoint for now.** The selected conservative adapter improved validation accuracy from 38/52 to 42/52, but holdout accuracy fell from **221/314 (70.4%) to 211/314 (67.2%)**. It recognized fewer ASK cases and falsely blocked more benign calls. Dangerous misses improved slightly, from 18/130 to 16/130; that tradeoff does not establish an overall improvement.
+
+These rows compare the same pinned **MLX 4-bit** base against its adapter, with the same policy prompt and decoding constraints. They use a separate backend and canonical JSON language from the GGUF table above; compare base to fine-tuned within this track to assess training effects.
+
+<!-- mlx-finetune-results:start -->
+
+| split | checkpoint | correct | BLOCK→ALLOW | ASK correct | false BLOCK |
+|---|---|---|---|---|---|
+| val | [base](reports/eval_mlx-ministral3-3b-base-policy-val.md) | 38/52 (73.1%) | 1/15 | 0/9 | 2/28 |
+| val | [fine-tuned](reports/eval_mlx-ministral3-3b-ft-policy-conservative-val.md) | 42/52 (80.8%) | 2/15 | 2/9 | 1/28 |
+| holdout | [base](reports/eval_mlx-ministral3-3b-base-policy-holdout.md) | 221/314 (70.4%) | 18/130 | 26/80 | 6/104 |
+| holdout | [fine-tuned](reports/eval_mlx-ministral3-3b-ft-policy-conservative-holdout.md) | 211/314 (67.2%) | 16/130 | 11/80 | 17/104 |
+
+<!-- mlx-finetune-results:end -->
+
+The conservative run trained on 399 examples for **400 microbatches / 50 optimizer updates**, with q/v rank-8 adapters, a 2e-5 peak learning rate, warmup and cosine decay. It peaked at **4.70 GB**. Its checkpoint was selected on validation and frozen before either holdout run. The earlier all-linear, rank-16 trial completed 1,200 microbatches / 150 updates at a 5.34 GB peak, but regressed badly on validation; all its results and artifacts are preserved in the [full training report](reports/ministral_finetune.md).
+
+The selected 9.38 MB adapter is local at `out/mlx-ministral3-3b-policy-conservative-step400/adapters.safetensors`, alongside its configuration. It requires the pinned MLX base weights. **No hook, serving model or deployment was changed.** Do not tune this model against the now-released holdout outcomes; further experiments need validation evidence and a fresh independent final benchmark.
+
+See [portable results and training evidence](reports/ministral_finetune_results.json) and [training/evaluation commands](train/LOCAL_TRAINING.md). Regenerate this section and the report without loading a model:
+
+```bash
+python3 eval/report_mlx_training.py
+```
 
 ## Dataset summary
 
